@@ -1,0 +1,16 @@
+/node_modules
+/public/storage
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+.vagrant
+_ide_helper.php
+/bower_components
+/public/img/billets/
+!/public/img/billets/.gitkeep
+/public/img/icons/
+!/public/img/icons/.gitkeep
+/public/uploads/students-trombi/
+!/public/uploads/students-trombi/.gitkeep

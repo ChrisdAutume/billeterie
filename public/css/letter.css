@@ -1,0 +1,115 @@
+#map {
+    position: absolute;
+}
+#avatar, #anneaux {
+    height: 96px;
+    margin-left: 36px;
+    margin-top: 34px;
+    position: absolute;
+    width: 76px;
+}
+#avatar {
+    background-color: #fff;
+}
+#name {
+    font-size: 21px;
+    margin-bottom: 0;
+    margin-left: 120px;
+    margin-top: 30px;
+    position: absolute;
+}
+#descParrain {
+    font-size: 11px;
+    margin-left: 120px;
+    margin-top: 60px;
+    max-width: 270px;
+    position: absolute;
+}
+#phone {
+    background-image: url(../img/letter/phone.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    font-size: 12px;
+    height: 24px;
+    line-height: 27px;
+    margin-left: 120px;
+    margin-top: 115px;
+    padding-left: 24px;
+    position: absolute;
+}
+#mail {
+    background-image: url(../img/letter/mail.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    font-size: 10px;
+    height: 24px;
+    line-height: 24px;
+    margin-left: 235px;
+    margin-top: 115px;
+    padding-left: 26px;
+    position: absolute;
+}
+#motParrainTitre {
+    background-image: url(../img/letter/chat.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    font-size: 21px;
+    margin-left: 35px;
+    margin-top: 137px;
+    padding-left: 36px;
+    position: absolute;
+}
+#motParrain {
+    font-size: 11px;
+    margin-left: 30px;
+    margin-top: 165px;
+    max-width: 360px;
+    position: absolute;
+    text-align: justify;
+}
+#plusInfosTitre {
+    font-size: 13px;
+    margin-left: 500px;
+    margin-top: 671px;
+    position: absolute;
+}
+#plusInfos {
+    font-size: 11px;
+    margin-left: 500px;
+    margin-top: 685px;
+    max-width: 210px;
+    position: absolute;
+    text-align: justify;
+}
+#plusInfos span {
+    text-align: left;
+}
+#teamName {
+    background-image: url(../img/letter/team.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    font-size: 13px;
+    margin-left: 890px;
+    margin-top: 25px;
+    max-width: 165px;
+    padding-left: 36px;
+    position: absolute;
+    text-align: justify;
+}
+#teamDesc {
+    font-size: 10px;
+    margin-left: 890px;
+    margin-top: 60px;
+    max-width: 210px;
+    position: absolute;
+    text-align: justify;
+}
+#teamIcon {
+    margin-left: 910px;
+    margin-top: 270px;
+    position: absolute;
+}

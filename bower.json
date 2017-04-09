@@ -1,0 +1,21 @@
+{
+  "name": "Billeterie",
+  "authors": [
+    "Christian d'Autume <christian.dautume@gmail.com>"
+  ],
+  "description": "Billeterie en ligne permettant la vente d'evenement associatif via etupay (UTT)",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "simplemde": "^1.11.2"
+  }
+}

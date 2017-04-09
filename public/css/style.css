@@ -1,0 +1,49 @@
+/* General */
+/* General - For all boxes */
+.box-countdown {
+	font-weight: bold;
+	float: right;
+}
+/* Admin dashboard - Student list */
+table.trombi img {
+	height: 50px;
+}
+
+table.trombi > tbody > tr > td {
+	height: 50px;
+	vertical-align: middle;
+}
+
+/* Student menu */
+a.btn {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+/* Volunteer profil */
+.convention-well {
+	text-align: justify;
+	font-family: "Courier New", Courier, monospace;
+}
+
+.text-field {
+	padding-top:8px;
+}
+
+/* Validated form on newcomer's form-group */
+.form-horizontal .form-group {
+	margin-left : auto;
+	margin-right : auto;
+	width: 100%;
+}
+.form-group-success {
+	padding: 5px 0;
+	width: 100%;
+	background-color: #dff0d8;
+	border-radius: 5px;
+}
+
+/* Vertically center in table */
+.table tbody>tr.vert-align>td{
+    vertical-align: middle;
+}

@@ -1,0 +1,47 @@
+html {
+    margin:0;
+    padding:0;
+    background: url("/img/background.jpg") black no-repeat center top !important;
+}
+
+body {
+    background: none !important;
+}
+
+a.btn {
+    margin:5px;
+}
+
+.container {
+    margin-top: 190px;
+    padding-top: 30px
+}
+.container h1, .container p{
+    color: #333;
+}
+
+.sponsor {
+    margin-top:150px;
+    color: #fff;
+}
+.sponsor img {
+    margin:10px;
+    max-height:70px
+}
+
+@media screen and (max-height: 700px) {
+    html {
+        background-position: center -190px !important;
+    }
+
+    .container {
+        margin-top: 0px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    .container {
+        padding-top: 0px;
+    }
+}
