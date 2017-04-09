@@ -3,7 +3,7 @@
 ###############################################################################
 variables:
     DOKKU_HOST: 'dokku.uttnetgroup.net'
-    PROJECT_NAME: 'siecampus3'
+    PROJECT_NAME: $CI_PROJECT_NAME
 
 ###############################################################################
 #                                 Cache                                       #
