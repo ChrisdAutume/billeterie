@@ -15,27 +15,76 @@ class MailTemplateSeed extends Seeder
             [
                 'name' => 'billet.emited',
                 'title' => "Confirmation d'obtention d'un billet",
-                'content' => " "
+                'content' => " Bonjour %SURNAME% %NAME%,
+ 
+ Nous vous confirmons l'obtention d'un billet pour la soirée :
+*  %BILLET-NAME% pour %NAME% %SURNAME%
+
+%BILLET-QRCODE%
+
+Pensez à vous munir d'une pièce d'identité pour la soirée.
+
+Nous vous remercions et attendons avec impatience de vous voir le 9 Mars.
+
+Cordialement,
+
+L'équipe organisatrice"
             ],
             [
                 'name' => 'guichet.created',
-                'title' => "Confirmation d'obtention d'un billet",
-                'content' => " "
+                'title' => "Création du guichet %GUICHET-NAME%",
+                'content' => "Bonjour,
+
+Un guichet %GUICHET-NAME% vient d'être crée sur la billeterie. Ce dernier sera fonctionnel du %GUICHET-START-AT% au %GUICHET-END-AT%.
+
+Lien: [%GUICHET-LINK%](%GUICHET-LINK%)
+
+En cas de soucis, l'équipe est disponible par mail [%CONTACT%](mailto://%CONTACT%).
+
+Cordialement,
+L'équipe organisatrice"
             ],
             [
-                'name' => 'guichet.ended',
-                'title' => "Confirmation d'obtention d'un billet",
-                'content' => " "
+                'name' => 'billet.updated',
+                'title' => "Commande mis à jour",
+                'content' => " Bonjour %SURNAME% %NAME%,
+ 
+ Votre dossier ayant été mis à jour, ce billet annule et remplace le précédent :
+*  %BILLET-NAME% pour %NAME% %SURNAME%
+
+%BILLET-QRCODE%
+
+Pensez à vous munir d'une pièce d'identité pour la soirée.
+
+Nous vous remercions et attendons avec impatience de vous voir le 9 Mars.
+
+Cordialement,
+
+L'équipe organisatrice"
             ],
             [
                 'name' => 'order.refused',
-                'title' => "Confirmation d'obtention d'un billet",
-                'content' => " "
+                'title' => "Annulation de commande",
+                'content' => " Bonjour %ORDER-SURNAME% %ORDER-NAME%,
+ 
+ Votre commande n°%ORDER-ID% vient d'être annulé suite au refus de votre moyen de paiment.
+ 
+ Cordialement,
+ L'équipe organisatrice"
             ],
             [
                 'name' => 'order.validated',
-                'title' => "Confirmation d'obtention d'un billet",
-                'content' => ""
+                'title' => "Confirmation de commande",
+                'content' => "Bonjour %ORDER-SURNAME% %ORDER-NAME%,
+
+Nous vous confirmons l'obtention de billet(s) pour l'évenement:
+
+%ORDER-SUMMARY%
+
+Nous vous remercions et attendons avec impatience de vous voir lors de l'événement.
+
+Cordialement,
+L'équipe organisatrice."
             ],
 
         ];
