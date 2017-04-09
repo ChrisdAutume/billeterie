@@ -37,7 +37,7 @@ return [
 
     'etupay' => [
         'api_key' => env('ETUPAY_APIKEY'),
-        'endpoint' => env('ETUPAY_ENDPOINT').'?service_id='.env('ETUPAY_SERVICEID'),
+        'endpoint' => env('ETUPAY_ENDPOINT', 'https://etupay.utt.fr/initiate').'?service_id='.env('ETUPAY_SERVICEID'),
         'service_id' => env('ETUPAY_SERVICEID'),
     ],
 
