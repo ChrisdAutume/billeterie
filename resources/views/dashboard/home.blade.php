@@ -43,7 +43,7 @@ Accueil
             @elseif($time)
                 <a class="btn btn-danger form-control" href="#">Prochaine(s) place(s) disponible dans {{ $time }}</a>
                 @else
-                    <button class="btn btn-danger form-control" disabled>Aucun billet de disponnible</button>
+                    <button class="btn btn-danger form-control" disabled>Aucun billet disponible</button>
                 @endif
         </div>
 </div>

@@ -57,13 +57,11 @@
                                     @endif
                                 <li class="dropdown user user-menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        <img src="{{ @asset('uploads/students-trombi/'.Auth::user()->student_id.'.jpg') }}" class="user-image" alt="User Image">
                                         <span class="hidden-xs">{{ Auth::user()->name }}</span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <!-- User image -->
                                         <li class="user-header">
-                                            <img src="{{ @asset('uploads/students-trombi/'.Auth::user()->student_id.'.jpg') }}" class="img-circle" alt="User Image">
                                             <p>
                                                 {{ Auth::user()->name }}
                                             </p>
@@ -71,7 +69,8 @@
                                         <!-- Menu Footer-->
                                         <li class="user-footer">
                                             <div class="pull-left">
-                                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                                <!--<a href="#" class="btn btn-default btn-flat">Profile</a>-->
+
                                             </div>
                                             <div class="pull-right">
                                                 <a href="{{ route('logout') }}" class="btn btn-default btn-flat">Sign out</a>
@@ -115,9 +114,9 @@
             <footer class="main-footer">
                 <div class="container">
                     <div class="pull-right hidden-xs">
-                        <!-- <b>Version</b> -->
+                        <a href="{{ route('view_page', ['slug'=>'cgu']) }}">CGU</a> - <a href="{{ route('view_page', ['slug'=>'cgv']) }}">CGV</a>
                     </div>
-                    <strong>En cas de problème,</strong> veulliez contacter <a href="mailto:{{ config('billeterie.contact') }}">l'équipe</a>
+                    <strong>En cas de problème,</strong> <a href="mailto:{{ config('billeterie.contact') }}">contactez nous</a>
                 </div>
             </footer>
         </div>
