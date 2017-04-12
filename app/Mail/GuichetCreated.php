@@ -50,7 +50,7 @@ class GuichetCreated extends Mailable implements ShouldQueue
             'guichet-name'=> $this->guichet->name,
             'guichet-start-at'=> $this->guichet->start_at,
             'guichet-end-at' => $this->guichet->end_at,
-            'guichet-link' => url()->route('get_sell_guichet', ['uuid'=> $this->uuid]),
+            'guichet-link' => url()->route('get_sell_guichet', ['uuid'=> $this->guichet->uuid]),
             'contact' => config('billeterie.contact'),
         ];
 
