@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'sie@campus3.fr',
-        'name' => 'Ne pas répondre',
+        'address' =>  env('APP_CONTACT', 'test@test.fr'),
+        'name' =>  env('APP_NAME', 'Billeterie'),
     ],
 
     /*
