@@ -94,6 +94,7 @@
                                         <i>{{ $price->description }}</i>
                                     </p>
                                 </td>
+                                <td></td>
                                 <td class="price">{{ round($price->price/100,2) }} €</td>
                                 <td><input type="radio" name="price_type" disabled value="{{ $price->id }}"></td>
                             </tr>
