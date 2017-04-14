@@ -31,6 +31,10 @@ class Option extends Model
 
     public function available()
     {
+        if($this->max_order == 0) {
+            return $this->max_choice;
+        }
+
         return ($this->max_order - $this->billets->count());
     }
 }
