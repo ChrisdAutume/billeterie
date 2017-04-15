@@ -7,6 +7,7 @@ use App\Models\File;
 use App\Models\MailTemplate;
 use App\Models\Page;
 use App\Models\Price;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,6 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('mail_template', MailTemplate::class);
         Route::model('billet', Billet::class);
         Route::model('price', Price::class);
+        Route::model('user', User::class);
     }
 
     /**

@@ -40,6 +40,9 @@ Route::group(['prefix' => 'billet'], function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function () {
     Route::get('sell', 'BilletController@adminSell')->name('admin_sell');
 
+    //Admin
+    Route::get('users', 'UserController@index')->name('admin_users_index');
+    Route::get('users/{user}/level/{level}', 'UserController@changeLevel')->name('admin_users_level');
     //Prices
     Route::get('prices', 'PriceController@index')->name('admin_prices_index');
     Route::post('prices', 'PriceController@create');
