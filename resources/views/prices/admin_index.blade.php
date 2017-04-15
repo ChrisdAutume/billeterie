@@ -102,7 +102,7 @@
                     <div class="col-lg-10">
                         <select class="form-control select-multiple" id="options" name="background">
                             @foreach(\App\Models\Billet::getExistingBackground() as $background)
-                                <option @if($prc->background == $background) selected="selected" @endif value="{{ $background }}">{{ $background }}</option>
+                                <option value="{{ $background }}">{{ $background }}</option>
                             @endforeach
                         </select>
                     </div>
