@@ -40,6 +40,12 @@ Route::group(['prefix' => 'billet'], function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function () {
     Route::get('sell', 'BilletController@adminSell')->name('admin_sell');
 
+    //Prices
+    Route::get('prices', 'PriceController@index')->name('admin_prices_index');
+    Route::post('prices', 'PriceController@create');
+
+    Route::get('prices/edit/{price}', 'PriceController@edit')->name('admin_prices_edit');
+    Route::post('prices/edit/{price}', 'PriceController@edit');
     // ORDER
     Route::get('orders', 'OrderController@adminOrderList')->name('admin_orders_list');
     Route::get('orders/create', 'OrderController@adminGetCreateNewOrder')->name('admin_orders_create');

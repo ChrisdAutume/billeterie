@@ -15,6 +15,32 @@ class Price extends Model
         'end_at'
     ];
 
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'start_at',
+        'end_at',
+        'max',
+        'price_aggregation',
+        'sendBillet',
+        'background'
+    ];
+
+    public function setStartAtAttribute($value)
+    {
+        $this->attributes['start_at'] = Carbon::createFromFormat('d/m/Y H:i', $value);
+    }
+
+    public function setEndAtAttribute($value)
+    {
+        $this->attributes['end_at'] = Carbon::createFromFormat('d/m/Y H:i', $value);
+    }
+
+    public function getPriceAggregationAttribute($value)
+    {
+        return explode(',', $value);
+    }
     public function lists()
     {
         return $this->belongsToMany(Liste::class)
@@ -45,7 +71,7 @@ class Price extends Model
     {
         if($agregation && $this->price_aggregation)
         {
-            $aggregation = explode(',', $this->price_aggregation);
+            $aggregation =$this->price_aggregation;
             $already_sold = Billet::whereIn('price_id', $aggregation)->count();
             return $already_sold+$this->billets->count();
         } else return $this->billets->count();

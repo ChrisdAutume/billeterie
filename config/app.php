@@ -184,6 +184,7 @@ return [
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Indal\Markdown\MarkdownServiceProvider::class,
         \Laravel\Tinker\TinkerServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
 
     ],
 
@@ -237,6 +238,8 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         //'Slack' => Maknz\Slack\Laravel\Facade::class,
         'Markdown' => Indal\Markdown\Facade::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 
