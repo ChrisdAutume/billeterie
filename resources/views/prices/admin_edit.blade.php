@@ -97,13 +97,18 @@
                 <div class="form-group">
                     <label for="background" class="col-lg-2 text-right">Fond du billet</label>
                     <div class="col-lg-10">
-                        <input type="text" name="background" class="form-control" value="{{ $prc->background }}">
+                        <select class="form-control select-multiple" id="options" name="background">
+                            @foreach(\App\Models\Billet::getExistingBackground() as $background)
+                                <option @if($prc->background == $background) selected="selected" @endif value="{{ $background }}">{{ $background }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <input type="submit" class="btn btn-success form-control" value="Modifier !" />
             </form>
         </div>
     </div>
+    @include('prices.partial_options')
 @endsection
 
 @section('sublayout-js')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Billet;
 use App\Models\Liste;
 use App\Models\Option;
 use App\Models\Price;
@@ -55,6 +56,11 @@ class PriceController extends Controller
         ]);
     }
 
+    public function removeListe(Price $price, Liste $liste)
+    {
+        $price->options()->detach($liste->id);
+        return redirect()->back();
+    }
     /**
      * Update the specified resource in storage.
      *

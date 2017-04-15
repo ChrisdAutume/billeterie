@@ -7,6 +7,7 @@ use App\Events\BilletUpdated;
 use App\Mail\BilletEmited;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage as Files;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
@@ -119,6 +120,11 @@ class Billet extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public static function getExistingBackground()
+    {
+        return Files::disk('billets')->files();
     }
 
 }
