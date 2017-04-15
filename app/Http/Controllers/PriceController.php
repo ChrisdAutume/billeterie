@@ -56,9 +56,15 @@ class PriceController extends Controller
         ]);
     }
 
+    public function linkListe(Request $request, Price $price)
+    {
+        $price->lists()->attach($request->input('liste'), ['max_order'=> $request->input('max_order')]);
+        return redirect()->back();
+    }
+
     public function removeListe(Price $price, Liste $liste)
     {
-        $price->options()->detach($liste->id);
+        $price->lists()->detach($liste->id);
         return redirect()->back();
     }
     /**

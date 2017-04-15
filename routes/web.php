@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::get('prices', 'PriceController@index')->name('admin_prices_index');
     Route::post('prices', 'PriceController@create');
 
+    Route::post('prices/lists/lin/{price}', 'PriceController@linkListe')->name('admin_prices_lists_link');
     Route::get('prices/lists/remove/{price}/{liste}', 'PriceController@removeListe')->name('admin_prices_lists_delete');
 
     Route::get('prices/edit/{price}', 'PriceController@edit')->name('admin_prices_edit');
