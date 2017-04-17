@@ -68,7 +68,7 @@
                         <td><input type="radio" name="price_type" value="{{ $price->id }}"></td>
                     </tr>
 
-                    @foreach($price->optionsSellable()->where('isMandatory', false)->get() as $option)
+                    @foreach($price->optionsSellable()->where('isMandatory', false)->orderBy('name')->get() as $option)
                     <tr class="vert-align">
                         <td>
                         </td>
