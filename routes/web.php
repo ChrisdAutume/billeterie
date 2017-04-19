@@ -18,6 +18,10 @@ Route::get('/{page}.html', 'PageController@view')->name('view_page');
 Route::get('/file/{file}', 'FileController@display')->name('view_file');
 Route::get('/download/{securite}/{billet}.pdf', 'BilletController@download')->name('download_billet');
 
+// GUICHET
+Route::get('guichet/vente/{uuid}', 'GuichetController@getSellGuichet')->name('get_sell_guichet');
+Route::post('guichet/vente/{uuid}', 'GuichetController@postSellGuichet')->name('post_sell_guichet');
+
 Route::group(['prefix' => 'login'], function () {
     Route::get('/', 'EtuUTTController@login')->name('login')->middleware('guest');
     Route::get('/callback', 'EtuUTTController@callback');
@@ -71,8 +75,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::get('guichet/autocomplete', 'GuichetController@getAutocomplete')->name('guichet_autocomplete');
     Route::get('guichet/validate', 'GuichetController@validateTicket')->name('guichet_validate');
 
-    Route::get('guichet/vente/{uuid}', 'GuichetController@getSellGuichet')->name('get_sell_guichet');
-    Route::post('guichet/vente/{uuid}', 'GuichetController@postSellGuichet')->name('post_sell_guichet');
 
     //Listes
     Route::get('lists/items/add', 'ListeController@addItemAction')->name('lists_items_add');
