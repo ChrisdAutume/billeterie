@@ -53,9 +53,9 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Tarifs</th>
+                    <th>Option</th>
                     <th>Nombres</th>
-                    <th>Disponnible</th>
+                    <th>Disponible</th>
                 </tr>
                 </thead>
                 <tbody>
