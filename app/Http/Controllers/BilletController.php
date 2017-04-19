@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\BilletUpdated;
 use App\Models\Billet;
 use App\Models\Don;
+use App\Models\Option;
 use App\Models\Price;
 use Carbon\Carbon;
 use DebugBar\DebugBar;
@@ -54,7 +55,11 @@ class BilletController extends Controller
     {
         Auth::user()->requireAdmin();
         //Dons
-        return view('admin.ventes', ['prices' => Price::all(), 'dons'=> Don::all()->sum('amount')]);
+        return view('admin.ventes', [
+            'prices' => Price::all(),
+            'dons'=> Don::all()->sum('amount'),
+            'options' => Option::all(),
+            ]);
     }
 
     public function adminSendMail(Request $request, $id)

@@ -12,7 +12,7 @@
     <div class="box box-default">
 
         <div class="box-header with-border">
-            <h3 class="box-title">Stats</h3>
+            <h3 class="box-title">Stats Tarifs</h3>
         </div>
         <div class="box-body">
                 <table class="table table-hover">
@@ -41,6 +41,35 @@
                     </tr>
                     </tbody>
                 </table>
+        </div>
+    </div>
+
+    <div class="box box-default">
+
+        <div class="box-header with-border">
+            <h3 class="box-title">Stats Options</h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Tarifs</th>
+                    <th>Nombres</th>
+                    <th>Disponnible</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($options as $option)
+                    <tr class="vert-align">
+                        <td>
+                            <strong>{{ $option->name }}</strong>
+                        </td>
+                        <td>{{ $option->billets()->withPivot('qty')->get()->sum('pivot.qty') }}</td>
+                        <td>@if($option->max_order == 0) Illimité @else {{ ($option->max_order - $option->billets()->withPivot('qty')->get()->sum('pivot.qty')) }}@endif</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection
