@@ -19,7 +19,8 @@
                     <thead>
                     <tr>
                         <th>Tarifs</th>
-                        <th>Nombres</th>
+                        <th>Vendu</th>
+                        <th>Restant</th>
                         <th>Validés</th>
                     </tr>
                     </thead>
@@ -29,7 +30,8 @@
                                 <td>
                                     <strong>{{ $price->name }}</strong>
                                 </td>
-                                <td>{{ $price->billets->count() }}</td>
+                                <td>{{ $price->billets->count() }} </td>
+                                <td> @if($price->max == 0)Illimité @else {{ $price->max - $price->billetSold(true) }} @endif</td>
                                 <td>{{ $price->billets->count() - $price->billets->where('validated_at', null)->count() }}</td>
                             </tr>
                     @endforeach
