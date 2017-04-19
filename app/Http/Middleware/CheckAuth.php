@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class CheckAuth
 {
@@ -15,6 +16,11 @@ class CheckAuth
      */
     public function handle($request, Closure $next, $role)
     {
+        if(!Auth::check())
+        {
+            $request->session()->flash('error',"Vous n'avez pas les droits nécessaire.");
+            return redirect()->route('home');
+        }
         if(!$request->user()->hasRole($role))
         {
             $request->session()->flash('error',"Vous n'avez pas les droits nécessaire.");
