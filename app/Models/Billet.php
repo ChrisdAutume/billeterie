@@ -27,10 +27,13 @@ class Billet extends Model
         if(!isset($this->attributes['uuid']))
             $this->generateUuid();
     }
-
+    public function getBilletHash()
+    {
+        return sha1($this->updated_at.$this->name.$this->surname.$this->price->id);
+    }
     public function getQrCodeSecurity()
     {
-        return $this->uuid .'|'.sha1($this->updated_at.$this->name.$this->surname.$this->price->id);
+        return $this->uuid .'|'.$this->getBilletHash();
     }
 
     public function getDownloadSecurity()

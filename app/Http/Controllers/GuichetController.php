@@ -79,18 +79,28 @@ class GuichetController extends Controller
 
         if($request->has('code'))
         {
-            $code = $request->input('code');
-            $code = explode('-', $code);
+            $code = urldecode($request->input('code'));
+            $code = explode('|', $code);
             if(count($code) == 2)
-                $billet = Billet::where('id', $code[0])->where('uuid', 'LIKE', '%'.trim($code[1]).'%')->first();
+                $billet = Billet::where('uuid', trim($code[0]))->first();
         }
 
-        if(!$billet)
-            return response()->json(['validated' => false]);
+        if(!$billet) {
+            return response()->json([
+                'validated' => false,
+                'text' => "Billet inconnu"
+            ]);
+        }
         elseif ($billet->validated_at) {
             $return = $billet->toArray();
             $return['validated'] = 'already';
             return response()->json($return);
+        } elseif ($code[1] != $billet->getBilletHash())
+        {
+            return response()->json([
+                'validated' => false,
+                'text' => "Billet invalide, discordance d'informations."
+            ]);
         }
         else
         {

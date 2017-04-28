@@ -45,10 +45,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
     <script type="application/javascript">
             var path = "{{ route('guichet_autocomplete') }}";
-            function isNumeric(n) {
-                var regex = /\d/g;
-                return regex.test(n);
-            }
 
             jQuery(document).ready(function($) {
 
@@ -145,18 +141,3 @@
             });
     </script>
 @endsection
-
-@section('old')
-    source:  function (query, process) {
-    if(isNumeric(query))
-    return false;
-
-    if(query.length < 3)
-    return false;
-    return $.get(path, { query: query }, function (data) {
-    return process(data);
-    });
-    },
-
-    engine.ttAdapter()
-    @endsection
