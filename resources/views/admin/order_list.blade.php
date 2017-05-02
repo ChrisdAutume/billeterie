@@ -36,7 +36,7 @@
                                     <li>{{ $billet->name }} {{ $billet->surname }} ({{ $billet->price->name }}) <a
                                                 class="btn btn-success btn-xs" href="{{ route('admin_billet_mail', ['id'=>$billet->id]) }}"><i class="fa fa-envelope"></i></a>
                                         <a
-                                                class="btn btn-info btn-xs" href="{{ route('admin_billet_view', ['billet'=>$billet]) }}"><i class="fa phpdebugbar-fa-eye"></i></a>
+                                                class="btn btn-info btn-xs" href="{{ route('admin_billet_view', ['billet'=>$billet]) }}"><i class="fa fa-eye"></i></a>
                                         @if(is_null($billet->validated_at))<a
                                                 class="btn btn-info btn-xs" href="{{ route('admin_billet_validate', ['id'=>$billet->id]) }}"><i class="fa fa-ticket"></i> Valider l'entrée</a>
                                     @endif </li>

@@ -193,7 +193,7 @@ class OrderController extends Controller
     public function adminOrderList(Request $request)
     {
         Auth::user()->requireAdmin();
-        $orders = Order::with('billets', 'dons')->get();
+        $orders = Order::with('billets', 'dons', 'billets.price')->get(['id', 'name', 'surname', 'state']);
         return view('admin.order_list', ['orders'=> $orders]);
     }
 
