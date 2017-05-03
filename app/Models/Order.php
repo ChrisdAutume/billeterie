@@ -20,6 +20,13 @@ class Order extends Model
         'online' => 'Online',
     ];
 
+    public static $states = [
+        'ordering' => 'Commande en cours',
+        'paid' => 'Payé',
+        'canceled' => 'Annulé',
+        'refunded' => 'Remboursé',
+    ];
+
     public $events = [
         'saved' => OrderUpdated::class,
     ];
@@ -27,7 +34,10 @@ class Order extends Model
     public $fillable = [
         'name',
         'surname',
-        'mail'
+        'mail',
+        'state',
+        'mean_of_paiment',
+        'price',
         ];
 
     public function validate()

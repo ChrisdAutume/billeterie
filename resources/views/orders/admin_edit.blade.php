@@ -17,7 +17,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Paiement</span>
                     <span class="info-box-number">{{ number_format($order->price/100, 2, ',', ' ')}} €</span>
-                    <span class="info-box-text">{{ $order->state }} - {{ $order->mean_of_paiment }}</span>
+                    <span class="info-box-text">{{ \App\Models\Order::$states[$order->state] }} @if($order->mean_of_paiment) - {{ \App\Models\Order::$means[$order->mean_of_paiment] }} @endif</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -55,6 +55,40 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="mail" class="col-lg-2 text-right">Montant</label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-euro"></i></span>
+                            <input type="number" class="form-control" name="mail" placeholder="Montant" value="{{ $order->price }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="state" class="col-lg-2 text-right">Status de la commande</label>
+                    <div class="col-lg-10">
+                        <select name="state" class="form-control" id="state">
+                            @foreach(\App\Models\Order::$states as $state=>$state_name)
+                                <option value="{{ $state }}" @if($order->state == $state) selected @endif>{{ $state_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mean_of_paiment" class="col-lg-2 text-right">Moyen de paiment</label>
+                    <div class="col-lg-10">
+                        <select name="mean_of_paiment" class="form-control" id="mean_of_paiment">
+                            <option value="">Aucun</option>
+                            @foreach(\App\Models\Order::$means as $mean=>$mean_name)
+                                <option value="{{ $mean }}" @if($order->mean_of_paiment == $mean) selected @endif>{{ $mean_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <input type="submit" class="btn btn-success form-control" value="Modifier" />
             </form>
         </div>
