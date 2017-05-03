@@ -44,7 +44,7 @@
                             </ul></td>
                         <td>@if($order->dons->count() > 0) {{ $order->dons[0]->amount/100 }} € @else <i>Aucun</i> @endif</td>
                         <td>{{ $order->state }}</td>
-                        <td></td>
+                        <td><a class="btn btn-xs btn-flat btn-warning" href="{{ route('admin_order_edit', ['order'=>$order]) }}"><i class="fa fa-pencil"></i></a></td>
                     </tr>
                 @endforeach
                 </tbody>

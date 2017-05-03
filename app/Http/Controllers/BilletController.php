@@ -18,6 +18,23 @@ use Illuminate\Support\Facades\Auth;
 
 class BilletController extends Controller
 {
+    public function adminPostBilletEdit(Billet $billet, Request $request)
+    {
+        $billet->fill($request->input());
+        $billet->save();
+        $request->session()->flash('success', "Billet mis à jour !");
+
+        return redirect()->back();
+    }
+
+    public function adminBilletDelete(Billet $billet, Request $request)
+    {
+        $billet->delete();
+        $request->session()->flash('success', "Billet supprimé !");
+
+        return redirect()->back();
+    }
+
     public function getBarcode(Request $request)
     {
         if ($request->input('id'))

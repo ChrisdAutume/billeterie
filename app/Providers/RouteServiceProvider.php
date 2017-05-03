@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Billet;
 use App\Models\File;
 use App\Models\MailTemplate;
+use App\Models\Order;
 use App\Models\Page;
 use App\Models\Price;
 use App\Models\User;
@@ -39,6 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('billet', Billet::class);
         Route::model('price', Price::class);
         Route::model('user', User::class);
+        Route::model('order', Order::class);
     }
 
     /**

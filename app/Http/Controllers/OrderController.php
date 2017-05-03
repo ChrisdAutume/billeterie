@@ -16,6 +16,22 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    public function adminOrderEdit(Order $order, Request $request)
+    {
+        return view('orders.admin_edit', [
+            'order' => $order,
+            'prices' => Price::all()
+        ]);
+    }
+
+    public function adminPostOrderEdit(Order $order, Request $request)
+    {
+        $order->fill($request->input());
+        $order->save();
+        $request->session()->flash('success', "Commande mis à jour !");
+
+        return redirect()->back();
+    }
     public function adminExpressOrder(Request $request, $place_id = null)
     {
         Auth::user()->requireLevel(2);

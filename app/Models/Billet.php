@@ -21,6 +21,13 @@ class Billet extends Model
         'updated' => BilletUpdated::class,
     ];
 
+    public $fillable = [
+        'name',
+        'surname',
+        'mail',
+        'price_id',
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

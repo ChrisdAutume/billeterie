@@ -62,9 +62,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::post('orders/create', 'OrderController@adminPostCreateNewOrder')->name('admin_orders_create_post');
     Route::get('orders/express/{place_id?}', 'OrderController@adminExpressOrder')->name('admin_express_orders');
 
-    Route::get('billet/sendMail/{id}', 'BilletController@adminSendMail')->name('admin_billet_mail');
-    Route::get('billet/validation/{id}', 'BilletController@adminValid')->name('admin_billet_validate');
-    Route::get('billet/view/{billet}', 'BilletController@adminView')->name('admin_billet_view');
+    Route::get('orders/edit/{order}', 'OrderController@adminOrderEdit')->name('admin_order_edit');
+    Route::post('orders/edit/{order}', 'OrderController@adminPostOrderEdit')->name('post_admin_order_edit');
+
+    Route::get('billets/sendMail/{id}', 'BilletController@adminSendMail')->name('admin_billet_mail');
+    Route::get('billets/validation/{id}', 'BilletController@adminValid')->name('admin_billet_validate');
+    Route::get('billets/view/{billet}', 'BilletController@adminView')->name('admin_billet_view');
+    Route::post('billets/edit/{billet}', 'BilletController@adminPostBilletEdit')->name('post_admin_billet_edit');
+    Route::get('billets/delete/{billet}', 'BilletController@adminBilletDelete')->name('admin_billet_delete');
 
 
     //Guichet

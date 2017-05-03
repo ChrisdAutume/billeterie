@@ -24,6 +24,12 @@ class Order extends Model
         'saved' => OrderUpdated::class,
     ];
 
+    public $fillable = [
+        'name',
+        'surname',
+        'mail'
+        ];
+
     public function validate()
     {
         if(!isset($this->data))
