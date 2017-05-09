@@ -15,6 +15,7 @@
             <h3 class="box-title">Stats Tarifs</h3>
         </div>
         <div class="box-body">
+            <?php $total =0; ?>
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -30,11 +31,20 @@
                                 <td>
                                     <strong>{{ $price->name }}</strong>
                                 </td>
+                                <?php $total += $price->billets->count(); ?>
                                 <td>{{ $price->billets->count() }} </td>
                                 <td> @if($price->max == 0)Illimité @else {{ $price->max - $price->billetSold(true) }} @endif</td>
                                 <td>{{ $price->billets->count() - $price->billets->where('validated_at', null)->count() }}</td>
                             </tr>
                     @endforeach
+                    <tr class="vert-align">
+                        <td>
+                            Totaux
+                        </td>
+                        <td>{{ $total }} </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     <tr class="vert-align">
                         <td>
                             <strong>Dons</strong>
