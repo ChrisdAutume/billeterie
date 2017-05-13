@@ -118,7 +118,7 @@ class GuichetController extends Controller
         $guichet = Guichet::where('uuid', $uuid)
             ->where('start_at','<=',Carbon::now('Europe/Paris'))
             ->where('end_at','>=',Carbon::now('Europe/Paris'))->first();
-
+        
         if(!$guichet)
         {
             Session::flash('error', "Le guichet n'existe pas ou n'est pas actif");

@@ -72,10 +72,32 @@ class BilletController extends Controller
     {
         Auth::user()->requireAdmin();
         //Dons
+
+        //Calculs des stats
+        $stats = Price::query()
+        ->join('billets', 'prices.id', '=', 'billets.price_id')
+        ->select([
+                \DB::RAW('DATE(billets.created_at) as `day`'),
+                \DB::raw('COUNT(billets.id) as `count`'),
+                'prices.name'
+            ])
+            ->groupBy('prices.name')
+            ->groupBy('day')
+            ->orderBy('day')
+            ->get();
+
+        $dates_interval = new \DatePeriod(
+            new \DateTime($stats->first()->day),
+            new \DateInterval('P1D'),
+            new \DateTime($stats->last()->day)
+        );
+        //dd($stats);
         return view('admin.ventes', [
             'prices' => Price::all(),
             'dons'=> Don::all()->sum('amount'),
             'options' => Option::all(),
+            'stats' => $stats,
+            'dates_interval' => $dates_interval
             ]);
     }
 
