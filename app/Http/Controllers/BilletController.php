@@ -87,9 +87,9 @@ class BilletController extends Controller
             ->get();
 
         $dates_interval = new \DatePeriod(
-            new \DateTime($stats->first()->day),
+            (new \DateTime($stats->first()->day))->modify('-1 day'),
             new \DateInterval('P1D'),
-            new \DateTime($stats->last()->day)
+            (new \DateTime($stats->last()->day))->modify('+1 day')
         );
         //dd($stats);
         return view('admin.ventes', [
