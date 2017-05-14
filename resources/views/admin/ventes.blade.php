@@ -168,6 +168,23 @@
                     borderWidth: 1
                 },
                 @endforeach
+            {
+                label: 'Total',
+                data: [ <?php
+                    foreach ($dates_interval as $day)
+                    {
+                        $stat = $stats->where('day',$day->format('Y-m-d'));
+                        if($stat->count() > 0)
+                            echo $stat->sum('count');
+                        else echo 0;
+                        echo ',';
+                    }
+                    ?>
+                ],
+                backgroundColor: 'rgba(0,0,0, 0.2)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 1
+            },
                 ]
             },
             options: ChartOptions
