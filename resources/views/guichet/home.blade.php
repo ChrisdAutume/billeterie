@@ -13,6 +13,7 @@
     <div class="alert alert-success" id="billet_ok" style="display: none">
         <h4><i class="icon fa fa-check"></i> Billet validé !</h4>
         Détenteur <strong id="identity"></strong>
+        <br>Options <strong id="options"></strong>
     </div>
     <div class="alert alert-danger" id="billet_wrong" style="display: none">
         <h4><i class="icon fa fa-ban"></i> ATTENTION !</h4>
@@ -40,7 +41,70 @@
     </div>
 
 @endsection
+@section('css')
+    <style>
+        span.twitter-typeahead {
+            display: block !important;
+        }
 
+        span.twitter-typeahead .tt-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            display: none;
+            float: left;
+            min-width: 160px;
+            padding: 5px 0;
+            margin: 2px 0 0;
+            list-style: none;
+            font-size: 14px;
+            text-align: left;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            background-clip: padding-box;
+        }
+        span.twitter-typeahead .tt-suggestion > p {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: normal;
+            line-height: 1.42857143;
+            color: #333333;
+            white-space: nowrap;
+        }
+        span.twitter-typeahead .tt-suggestion > p:hover,
+        span.twitter-typeahead .tt-suggestion > p:focus {
+            color: #ffffff;
+            text-decoration: none;
+            outline: 0;
+            background-color: #428bca;
+        }
+        span.twitter-typeahead .tt-suggestion.tt-cursor {
+            color: #ffffff;
+            background-color: #428bca;
+        }
+        span.twitter-typeahead {
+            width: 100%;
+        }
+        .input-group span.twitter-typeahead {
+            display: block !important;
+        }
+        .input-group span.twitter-typeahead .tt-dropdown-menu {
+            top: 32px !important;
+        }
+        .input-group.input-group-lg span.twitter-typeahead .tt-dropdown-menu {
+            top: 44px !important;
+        }
+        .input-group.input-group-sm span.twitter-typeahead .tt-dropdown-menu {
+            top: 28px !important;
+        }
+    </style>
+@endsection
 @section('sublayout-js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
     <script type="application/javascript">
@@ -55,6 +119,7 @@
                     $('#billet_inconnu').hide(100);
 
                     $("#identity").html(obj.name + ' '+ obj.surname);
+                    $("#options").html(obj.options);
                     $('#billet_ok').show(100);
                 };
 

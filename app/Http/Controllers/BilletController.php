@@ -117,7 +117,12 @@ class BilletController extends Controller
         $billet = Billet::findOrFail($id);
         $billet->validated_at = Carbon::now();
         $billet->save();
-        $request->session()->flash('success', "Place validé");
+        $option_text = "";
+        foreach ($billet->options as $option)
+        {
+            $option_text .= ' '.$option->pivot->qty .' '.$option->name;
+        }
+        $request->session()->flash('success', "Place validé, $option_text");
         return redirect()->back();
     }
 

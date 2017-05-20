@@ -95,7 +95,7 @@ class GuichetController extends Controller
             $return = $billet->toArray();
             $return['validated'] = 'already';
             return response()->json($return);
-        } elseif ($code[1] != $billet->getBilletHash())
+        } elseif (isset($code) && $code[1] != $billet->getBilletHash())
         {
             return response()->json([
                 'validated' => false,
@@ -107,6 +107,12 @@ class GuichetController extends Controller
             $billet->validated_at = Carbon::now();
             $billet->save();
             $return = $billet->toArray();
+
+            $return['options'] = "";
+            foreach ($billet->options as $option)
+            {
+                $return['options'] .= ' '.$option->pivot->qty .' '.$option->name;
+            }
 
             $return['validated'] = true;
             return response()->json($return);
