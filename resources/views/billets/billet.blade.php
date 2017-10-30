@@ -19,7 +19,7 @@
         {
             display: block;
             width: 2480px;
-            height: 1336px;
+            height: 1338px;
             background-color: black;
         }
 
@@ -39,7 +39,7 @@
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: #000000;
+            color: #FFFFFF;
             font-size: 78px;
             font-weight: bold;
         }
@@ -53,7 +53,7 @@
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: #000000;
+            color: #FFFFFF;
             font-size: 78px;
             font-weight: bold;
         }
@@ -67,7 +67,7 @@
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: #000000;
+            color: #FFFFFF;
             font-size: 78px;
             font-weight: bold;
         }
@@ -76,8 +76,8 @@
         {
             position: absolute;
             width: 430px;
-            height: 430px;
-            top: 507px;
+            height: 450px;
+            top: 515px;
             left: 1962px;
         }
 
@@ -88,13 +88,28 @@
             width: 430px;
         }
 
+        #code #id
+        {
+            display: block;
+            height: 20px;
+            width: 430px;
+            color: #000000;
+            text-align: center;
+            margin-top: 425px;
+            font-size: 40px;
+            font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+        }
+
 
     </style>
 </head>
 <body>
 <div class="billet">
-    <img src="{{ @asset('img/billets/'.$billet->price->background) }}" alt="">
-    <div id="code"><img src="data:image/png;base64,{{ $billet->base64QrCode() }}" alt=""></div>
+    <img src="data:{{ $billet->price->file->mime }};base64,{{ $billet->price->file->data }}" alt="">
+    <div id="code">
+        <img src="data:image/png;base64,{{ $billet->base64QrCode() }}" alt="">
+        <p id="id">{{ $billet->getQrCodeSecurity() }}</p>
+    </div>
     <div id="name">{{ strtoupper($billet->name) }}</div>
     <div id="surname">{{ ucfirst(strtolower($billet->surname)) }}</div>
     <div id="type">{{ ucfirst(strtolower($billet->price->name)) }}</div>

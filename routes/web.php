@@ -14,9 +14,17 @@
 Route::get('/', 'HomeController@homeAction')->name('home');
 Route::get('/home', 'HomeController@homeAction');
 
+Route::get('/landing', function () {
+    return view('landing.index');
+})->name('landing');
+
 Route::get('/{page}.html', 'PageController@view')->name('view_page');
 Route::get('/file/{file}', 'FileController@display')->name('view_file');
 Route::get('/download/{securite}/{billet}.pdf', 'BilletController@download')->name('download_billet');
+
+#Dev
+Route::get('/dev/login/{user}', 'UserController@loginInDev')->name('admin_dev_login');
+
 
 // GUICHET
 Route::get('guichet/vente/{uuid}', 'GuichetController@getSellGuichet')->name('get_sell_guichet');
@@ -99,7 +107,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::post('pages/store', 'PageController@store')->name('post_store_page');
 
     // Files
+    Route::get('file/', 'FileController@adminList')->name('admin_list_files');
+    Route::get('file/json', 'FileController@adminApiList')->name('json_list_files');
     Route::post('file/upload', 'FileController@upload')->name('upload_file');
+    Route::get('file/delete/{file}', 'FileController@delete')->name('delete_file');
 
     //Mail template
     Route::get('mail/template', 'MailTemplateController@getAdminList')->name('lists_mail_templates');

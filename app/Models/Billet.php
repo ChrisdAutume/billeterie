@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Events\BilletCreated;
 use App\Events\BilletUpdated;
 use App\Mail\BilletEmited;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Torann\Hashids\Facade as Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage as Files;
@@ -15,10 +17,17 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class Billet extends Model
 {
+    use SoftDeletes;
 
     protected $events = [
-        'created' => BilletCreated::class,
         'updated' => BilletUpdated::class,
+    ];
+
+    protected $dates = [
+        'created_at',
+        'validated_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     public $fillable = [
@@ -36,11 +45,16 @@ class Billet extends Model
     }
     public function getBilletHash()
     {
-        return sha1($this->updated_at.$this->name.$this->surname.$this->price->id);
+        return crc32($this->updated_at.$this->name.$this->surname.$this->price->id);
     }
     public function getQrCodeSecurity()
     {
-        return $this->uuid .'|'.$this->getBilletHash();
+        return Hashids::encode($this->id, $this->getBilletHash());
+    }
+
+    public static function decryptQrCode($value):array
+    {
+        return Hashids::decode($value);
     }
 
     public function getDownloadSecurity()
@@ -80,7 +94,7 @@ class Billet extends Model
     {
         $token = $this->getQrCodeSecurity();
 
-        $QR = base64_decode(DNS2D::getBarcodePNG($token, 'QRCODE,H', 4,4));
+        $QR = base64_decode(DNS2D::getBarcodePNG($token, 'QRCODE,M', 9,9));
         if(file_exists(public_path('img/billets/logo.png'))) {
             $logo = imagecreatefromstring(file_get_contents(public_path('img/billets/logo.png')));
             $QR = imagecreatefromstring($QR);
@@ -107,7 +121,8 @@ class Billet extends Model
     public function outputBillet()
     {
         $billet = view('billets.billet', ['billet'=>$this])->render();
-        return PDF::loadHTML($billet)->setPaper([0,0,1010,1850], 'landscape')->setWarnings(false);
+        $billet = preg_replace('/>\s+</', '><', $billet);
+        return PDF::loadHTML($billet)->setPaper([0,0,1010,1850], 'landscape')->setWarnings(true);
     }
 
     public function sendToMail()

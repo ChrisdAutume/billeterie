@@ -52,9 +52,9 @@ class BilletEmited extends Mailable implements ShouldQueue
             'surname' => $this->billet->surname,
             'billet-name' => $this->billet->price->name,
             'billet-qrcode' => '<div style="text-align: center">
-                                    <img src="data:image/png;base64,' . $this->billet->base64QrCode() . '" alt="eBillet"   /><br>
-                                    <a href="'.$billet_url.'"
-style="background-color:#F71030;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">Télécharger le billet</a>
+                                    <img src="data:image/png;base64,' . $this->billet->base64QrCode() . '" alt="eBillet"   /><br><br>
+                                    <p><a href="'.$billet_url.'"
+style="background-color:#F71030;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:189px;margin-top:20px;-webkit-text-size-adjust:none;">Télécharger le billet</a></p>
                                 </div>',
         ];
 

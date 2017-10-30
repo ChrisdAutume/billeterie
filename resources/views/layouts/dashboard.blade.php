@@ -26,6 +26,7 @@
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contenu <span class="caret"></span></a>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li><a href="{{ route('lists_pages') }}">Pages</a></li>
+                                                <li><a href="{{ route('admin_list_files') }}">Gestionnaire de fichiers</a></li>
                                                 <li><a href="{{ route('lists_mail_templates') }}">Template mails</a></li>
                                             </ul>
                                         </li>

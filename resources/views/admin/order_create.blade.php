@@ -92,13 +92,44 @@
                     <div class="form-group">
                         <label class="col-lg-2 text-right">Type de billet</label>
                         <div class="col-lg-10">
-                            <select class="form-control" name="price[]">
+                            <select class="form-control billet_select" name="price[]">
                                 @foreach($prices as $price)
                                     <option price="{{ $price->price/100 }}" value="{{ $price->id }}">{{ $price->name }} ({{ $price->price/100 }}€)</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
+
+                    @foreach($prices as $price)
+                    <div class="form-group options_prices price_options_{{ $price->id }}">
+                        <label class="col-lg-2 text-right">Option disponible</label>
+                        <div class="col-lg-10">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Prix</th>
+                                </tr>
+                                </thead>
+                            @foreach($price->optionsSellable()->where('isMandatory', false)->orderBy('name')->get() as $option)
+                                <tr class="vert-align price price_{{ $price->id }}">
+                                    <td>
+                                        <select name="option_{{ $price->id }}_{{ $option->id }}" @if($option->available() == 0) disabled @endif>
+                                            @for($i=0; $i <= (($option->max_choice>$option->available())?$option->available():$option->max_choice); $i++)
+                                                <option value="{{$i}}">{{$i}}</option>
+                                            @endfor
+                                        </select> {{ $option->name }}
+                                        @if($option->description)
+                                            <i class="glyphicon glyphicon-info-sign right" data-toggle="tooltip" data-placement="right" title="{{ $option->description }}"></i>
+                                        @endif
+                                    </td>
+                                    <td class="price">{{ round($option->price/100,2) }} €</td>
+                                </tr>
+                            @endforeach
+                            </table>
+                        </div>
+                    </div>
+                    @endforeach
                 </fieldset>
                 <a href="#" class="btn btn-info form-control" id='btnAdd'> Ajouter un billet ! </a>
                 <fieldset id="basket">
@@ -133,7 +164,9 @@
 
         updatePrice = function () {
            var total = 0;
-            $('.billet select option:selected').each(function() {
+            $(".options_prices").hide();
+            $('.form-group select option:selected').each(function() {
+                console.log($(this).val());
                 total += parseInt($(this).attr('price'));
             });
             $('#total_price').html(total + ' €');

@@ -98,8 +98,8 @@
                     <label for="background" class="col-lg-2 text-right">Fond du billet</label>
                     <div class="col-lg-10">
                         <select class="form-control select-multiple" id="options" name="background">
-                            @foreach(\App\Models\Billet::getExistingBackground() as $background)
-                                <option @if($prc->background == $background) selected="selected" @endif value="{{ $background }}">{{ $background }}</option>
+                            @foreach(\App\Models\File::all(['uuid', 'name']) as $background)
+                                <option value="{{ $background->uuid }}">{{ $background->name }}</option>
                             @endforeach
                         </select>
                     </div>

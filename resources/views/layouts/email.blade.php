@@ -1,61 +1,72 @@
-<!DOCTYPE html>
-<html lang="fr" style="padding: 0; margin: 0;">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>@yield('title')</title>
 
-	<title>@yield('title')</title>
+
 </head>
-<body style="padding: 0; margin: 0; font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif; background: #ecf0f5; color: #333;">
-	<table style="width: 100%; border-collapse: collapse;">
-		<tr>
-			<td style="vertical-align: center; background: #3a3576; color: #fff; border-collapse: collapse; height: 50px; line-height: 30px;">
-				<table style="max-width: 600px; width:100%; margin: 0 auto; border-collapse: collapse; font-size:18px;">
-					<tr>
-						<td>
-							<a style="color: #fff;text-decoration:none;" href="{{ route('home') }}"><b>{{ config('billeterie.event.name') }}</b> {{ config('billeterie.event.subname') }}</a>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
+<body style="-webkit-text-size-adjust: none; box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; height: 100%; line-height: 1.4; margin: 0; width: 100% !important;" bgcolor="#F2F4F6"><style type="text/css">
+    body {
+        width: 100% !important; height: 100%; margin: 0; line-height: 1.4; background-color: #F2F4F6; color: #74787E; -webkit-text-size-adjust: none;
+    }
+    @media only screen and (max-width: 600px) {
+        .email-body_inner {
+            width: 100% !important;
+        }
+        .email-footer {
+            width: 100% !important;
+        }
+    }
+    @media only screen and (max-width: 500px) {
+        .button {
+            width: 100% !important;
+        }
+    }
+</style>
+<span class="preheader" style="box-sizing: border-box; display: none !important; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 1px; line-height: 1px; max-height: 0; max-width: 0; mso-hide: all; opacity: 0; overflow: hidden; visibility: hidden;"></span>
+<table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0; padding: 0; width: 100%;" bgcolor="#F2F4F6">
+    <tr>
+        <td align="center" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; word-break: break-word;">
+            <table class="email-content" width="100%" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0; padding: 0; width: 100%;">
+                <tr>
+                    <td class="email-masthead" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; padding: 25px 0; word-break: break-word;" align="center">
+                        <a href="https://etupay.utt.fr" class="email-masthead_name" style="box-sizing: border-box; color: #bbbfc3; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; font-weight: bold; text-decoration: none; text-shadow: 0 1px 0 white;">
+                            @yield('title')
+                        </a>
+                    </td>
+                </tr>
 
-		<tr>
-			<td style="vertical-align: top; max-width: 600px; margin:auto; border-collapse: collapse; font-family: 'Source Sans Pro',sans-serif;">
-				<table style="max-width: 600px; width:100%; margin: 0 auto; border-collapse: collapse;margin-top: 15px;margin-bottom:10px">
-					<tr>
-						<td>
-							<h1 style="margin: 0;font-size: 24px; font-weight: normal;">
-								@yield('title')
-							</h1>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
+                <tr>
+                    <td class="email-body" width="100%" cellpadding="0" cellspacing="0" style="-premailer-cellpadding: 0; -premailer-cellspacing: 0; border-bottom-color: #EDEFF2; border-bottom-style: solid; border-bottom-width: 1px; border-top-color: #EDEFF2; border-top-style: solid; border-top-width: 1px; box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0; padding: 0; width: 100%; word-break: break-word;" bgcolor="#FFFFFF">
+                        <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0 auto; padding: 0; width: 570px;" bgcolor="#FFFFFF">
 
-		<tr>
-			<td style="vertical-align: top; text-align: justify; border-collapse: collapse; font-size: 14px; ">
-				<table style="max-width: 600px; width:100%; margin: 0 auto; border-collapse: collapse; border-top: 3px solid #d2d6de; background-color: #fff; box-shadow: 0 1px 1px rgba(0,0,0,0,1);border-radius: 3px;">
-					<tr>
-						<td style="padding: 10px; ">
-							@yield('content')
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td style="vertical-align: top; padding: 20px 0 20px 0; text-align: center; color: #999999; border-collapse: collapse; font-size: 11px;">
-				<table style="max-width: 600px; width:100%; margin: 0 auto; border-collapse: collapse;">
-					<tr>
-						<td>
-							Généré et envoyé par la billeterie: {{ config('billeterie.event.name') }} {{ config('billeterie.event.subname') }}<br />
-							Pour ne plus recevoir d'emails de notre part, contactez <a href="mailto:{{ config('billeterie.contact') }}">{{ config('billeterie.contact') }}</a>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
+                            <tr>
+                                <td class="content-cell" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; padding: 35px; word-break: break-word;">
+                                    @yield('content')
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; word-break: break-word;">
+                        <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0 auto; padding: 0; text-align: center; width: 570px;">
+                            <tr>
+                                <td class="content-cell" align="center" style="box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; padding: 35px; word-break: break-word;">
+                                    <p class="sub align-center" style="box-sizing: border-box; color: #AEAEAE; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 1.5em; margin-top: 0;" align="center"> Généré et envoyé par : {{ config('billeterie.event.name') }} {{ config('billeterie.event.subname') }}</p>
+                                    <p class="sub align-center" style="box-sizing: border-box; color: #AEAEAE; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 1.5em; margin-top: 0;" align="center">
+                                        Pour ne plus recevoir d'emails de notre part, contactez <a href="mailto:{{ config('billeterie.contact') }}">{{ config('billeterie.contact') }}</a>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

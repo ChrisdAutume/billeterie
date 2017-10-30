@@ -58,7 +58,7 @@ class PaiementController extends Controller
                 $request->session()->flash('warning', "Certains articles n'ont pu être ajouté a votre commande.");
         }
 
-        if($request->input('don', 0) > 0)
+        if($request->input('don', 0) >= intval(config('billeterie.don.min', 0)/100))
         {
             $don = new Don();
             $don->amount = intval($request->input('don'))*100;

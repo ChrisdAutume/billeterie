@@ -11,6 +11,10 @@ class File extends Model
         'name', 'type', 'data'
     ];
 
+    protected $primaryKey = 'uuid';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
 
     public function __construct(array $attributes = [])
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FileStorage;
 use App\Models\File;
+use Illuminate\Support\Facades\Session;
 
 class FileController extends Controller
 {
@@ -17,13 +18,36 @@ class FileController extends Controller
         $file->data = base64_encode(file_get_contents($f->getRealPath()));
         $file->save();
 
-        return response()->json([
-            'url' => url()->route('view_file', ['file'=>$file])
-        ]);
-
+        if ($request->isJson()) {
+            return response()->json([
+                'url' => url()->route('view_file', ['file' => $file])
+            ]);
+        } else {
+            Session::flash('success', "Fichier ajouté !");
+            return redirect()->route('admin_list_files');
+        }
 
     }
 
+    public function adminApiList()
+    {
+        $files = File::all(['uuid', 'name', 'size', 'mime', 'created_at']);
+         return response()->json($files->toArray());
+    }
+
+    public function adminList()
+    {
+        return view('admin.file.list', ['files' => File::all(['uuid', 'name', 'size', 'mime', 'created_at'])]);
+    }
+
+    public function delete(File $file)
+    {
+        if ($file->delete())
+            Session::flash('success', "Fichier supprimé");
+        else
+            Session::flash('error', "Le fichier n'a pus être supprimé !");
+        return redirect()->route('admin_list_files');
+    }
     public function display(File $file)
     {
         $data = base64_decode($file->data);

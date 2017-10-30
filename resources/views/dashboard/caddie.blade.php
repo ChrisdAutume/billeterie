@@ -88,7 +88,7 @@
                         <td class="col-sm-4 col-md-2">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-eur"></i></span>
-                                <input type="input" class="form-control" name="don" placeholder="0">
+                                <input type="input" class="form-control" name="don" placeholder="{{ config('billeterie.don.min')/100 }}" min="{{ config('billeterie.don.min')/100 }}">
                             </div>
                         </td>
 

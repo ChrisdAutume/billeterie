@@ -48,6 +48,11 @@ class Price extends Model
             ->withTimestamps();
     }
 
+    public function file()
+    {
+        return $this->hasOne(File::class, 'uuid', 'background');
+    }
+
     public function billets()
     {
         return $this->hasMany(Billet::class);

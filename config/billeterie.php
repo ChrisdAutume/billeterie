@@ -2,15 +2,17 @@
 
 return [
     'don' => [
-        'enabled' => false,
+        'enabled' => true,
         'name' => 'Don de promo',
         'text' => "Ici une description",
+        'min'  =>   1000,
     ],
     'contact' => env('APP_CONTACT', 'test@test.fr'),
     'event' => [
         'name' => env('APP_NAME', 'Test'),
         'subname' => env('APP_SUBNAME', 'Test'),
     ],
-    'piwik' => env('PIWIK_SITE_ID', null)
+    'piwik' => env('PIWIK_SITE_ID', null),
+    'landing_until' => new DateTime(env('LANDING_DATE', '2017/11/01 14:00')),
 
 ];
