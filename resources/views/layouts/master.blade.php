@@ -42,5 +42,14 @@
 		<noscript><p><img src="//piwik.uttnetgroup.fr/piwik.php?idsite={{ config('billeterie.piwik') }}" style="border:0;" alt="" /></p></noscript>
 		<!-- End Piwik Code -->
 		@endif
+		@if(config('billeterie.analytics'))
+		<script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '{{ config('billeterie.analytics') }}');
+		</script>
+		@endif
 	</body>
 </html>
