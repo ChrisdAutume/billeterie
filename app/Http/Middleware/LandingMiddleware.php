@@ -25,14 +25,13 @@ class LandingMiddleware
     public function handle($request, Closure $next)
     {
         $date_end = config('billeterie.landing_until', null);
-
-        if(!$this->inExceptArray($request)) {
-            if (!is_null($date_end) || !Auth::check() || !Auth::user()->isAdmin()) {
-                if ((new \DateTime()) < new \DateTime($date_end)) {
-                    return new Http\Response(view('landing.index'));
-                }
-            }
+        if($this->inExceptArray($request) || (Auth::user() && Auth::user()->isAdmin())) {
+            return $next($request);
         }
+        if (!is_null($date_end) && (new \DateTime()) < new \DateTime($date_end)) {
+            return new Http\Response(view('landing.index'));
+        }
+
 
         return $next($request);
     }
