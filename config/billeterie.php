@@ -14,6 +14,6 @@ return [
     ],
     'piwik' => env('PIWIK_SITE_ID', null),
     'analytics' => env('GOOGLE_ANALYTICS_ID', null),
-    'landing_until' => new DateTime(env('LANDING_DATE', '2017/11/01 14:00')),
+    'landing_until' => env('LANDING_DATE', '2017/11/01 14:00'),
 
 ];

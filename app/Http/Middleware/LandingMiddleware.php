@@ -26,8 +26,8 @@ class LandingMiddleware
     {
         $date_end = config('billeterie.landing_until', null);
 
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
-            if (!is_null($date_end) && (new \DateTime() < $date_end) && !$this->inExceptArray($request)) {
+        if (!is_null($date_end) || !Auth::check() || !Auth::user()->isAdmin() || $this->inExceptArray($request)) {
+            if ((new \DateTime()) < new \DateTime($date_end)) {
                 return new Http\Response(view('landing.index'));
             }
         }

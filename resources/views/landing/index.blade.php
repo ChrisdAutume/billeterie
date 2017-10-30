@@ -166,7 +166,7 @@
 <script>
     $(function(){
 
-        $('div#counter').countdown('{{config('billeterie.landing_until')->format('Y/m/d H:s')}}')
+        $('div#counter').countdown('{{config('billeterie.landing_until')}}')
             .on('update.countdown', function(event) {
                 $(this).html(event.strftime('<div class=\"half\">' +
                     '<span>%D <sup>days</sup></span>' +
