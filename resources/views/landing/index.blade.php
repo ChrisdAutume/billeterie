@@ -165,16 +165,9 @@
 </script>
 <script>
     $(function(){
-        var ts = new Date({{config('billeterie.landing_until')->getTimestamp() * 1000}});
 
-        if((new Date()) > ts)
-        {
-            location.reload();
-        }
-
-        $('div#counter').countdown({timestamp: ts})
+        $('div#counter').countdown('{{config('billeterie.landing_until')->format('Y/m/d H:s')}}')
             .on('update.countdown', function(event) {
-
                 $(this).html(event.strftime('<div class=\"half\">' +
                     '<span>%D <sup>days</sup></span>' +
                     '<span>%H <sup>hours</sup></span>' +
@@ -183,6 +176,9 @@
                     '<span>%M <sup>mins</sup></span>' +
                     '<span>%S <sup>secs</sup></span>' +
                     '</div>'));
+            })
+            .on('finish.countdown', function(event) {
+                location.reload();
             });
 
     });
