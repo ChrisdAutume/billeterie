@@ -21,10 +21,30 @@ class PaiementController extends Controller
         }
 
         $caddie = $request->session()->get('billets');
-        $request->session()->forget('billets');
 
         $articles = [];
         $amount = 0;
+
+        if($request->input('don', 0) >= intval(config('billeterie.don.min', 0)/100))
+        {
+            $don = new Don();
+            $don->amount = intval($request->input('don'))*100;
+            $caddie[] = $don;
+
+            $articles[] = [
+                'name' => 'Don de promo',
+                'price' => intval($request->input('don'))*100,
+                'quantity'   => 1
+            ];
+
+            $amount+=intval($request->input('don'))*100;
+        } else if ($request->input('don', 0) != 0 && $request->input('don', 0) < intval(config('billeterie.don.min', 0)/100))
+        {
+            $request->session()->flash('warning', "Le montant minimum d'un don est de ".intval(config('billeterie.don.min', 0)/100).' €.');
+            return redirect()->route('getCaddie');
+        }
+
+        $request->session()->forget('billets');
 
         if(count($caddie) <=0)
         {
@@ -33,6 +53,9 @@ class PaiementController extends Controller
         }
         foreach ($caddie as $item)
         {
+            if($item instanceof Don)
+                continue;
+
             $billet = $item['billet'];
             $options = $item['options'];
 
@@ -58,20 +81,6 @@ class PaiementController extends Controller
                 $request->session()->flash('warning', "Certains articles n'ont pu être ajouté a votre commande.");
         }
 
-        if($request->input('don', 0) >= intval(config('billeterie.don.min', 0)/100))
-        {
-            $don = new Don();
-            $don->amount = intval($request->input('don'))*100;
-            $caddie[] = $don;
-
-            $articles[] = [
-                'name' => 'Don de promo',
-                'price' => intval($request->input('don'))*100,
-                'quantity'   => 1
-            ];
-
-            $amount+=intval($request->input('don'))*100;
-        }
 
         $order = new Order();
         $order->price= $amount;

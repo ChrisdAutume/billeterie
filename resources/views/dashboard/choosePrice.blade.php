@@ -69,7 +69,7 @@
                     </tr>
 
                     @foreach($price->optionsSellable()->where('isMandatory', false)->orderBy('name')->get() as $option)
-                    <tr class="vert-align price price_{{ $price->id }}">
+                    <tr class="vert-align options price_{{ $price->id }}">
                         <td>
                         </td>
                         <td>
@@ -110,10 +110,10 @@
 @section('sublayout-js')
     <script>
         $(document).ready(function () {
-            $('.price').fadeOut();
+            $('.options').fadeOut();
             $('input[type=radio][name=price_type]').change(function () {
                 var price_id = $('input[type=radio][name=price_type]:checked').attr('value');
-                $('.price').fadeOut();
+                $('.options').fadeOut();
                 $('.price_'+price_id).fadeIn();
             });
         });
