@@ -68,7 +68,6 @@ class Order extends Model
                     'amount' => $opt['qty']*$opt['option']->price
                     ]);
             }
-            $billet->sendToMail();
         }
 
         $this->save();
