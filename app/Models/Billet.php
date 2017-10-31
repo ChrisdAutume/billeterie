@@ -45,7 +45,8 @@ class Billet extends Model
     }
     public function getBilletHash()
     {
-        return crc32($this->updated_at.$this->name.$this->surname.$this->price->id);
+        $crc = crc32($this->updated_at.$this->name.$this->surname.$this->price->id);
+        return substr($crc, -4);
     }
     public function getQrCodeSecurity()
     {

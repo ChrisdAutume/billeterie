@@ -34,12 +34,6 @@ class OrderValidated extends Mailable implements ShouldQueue
         $this->order = $order;
         $this->template = MailTemplate::where('name',$this->template_name)->first();
 
-        //On génére l'envoi de mail
-        foreach ($this->order->billets()->get() as $billet)
-        {
-            $billet->sendToMail();
-        }
-
         if(!$this->template || !$this->template->isActive)
         {
             $this->delete();
