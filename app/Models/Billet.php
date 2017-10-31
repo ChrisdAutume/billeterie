@@ -94,7 +94,7 @@ class Billet extends Model
     {
         $token = $this->getQrCodeSecurity();
 
-        $QR = base64_decode(DNS2D::getBarcodePNG($token, 'QRCODE,M', 4,4));
+        $QR = base64_decode(DNS2D::getBarcodePNG($token, 'QRCODE,M'));
         if(file_exists(public_path('img/billets/logo.png'))) {
             $logo = imagecreatefromstring(file_get_contents(public_path('img/billets/logo.png')));
             $QR = imagecreatefromstring($QR);
