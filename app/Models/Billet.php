@@ -93,8 +93,14 @@ class Billet extends Model
     public function base64QrCode()
     {
         $token = $this->getQrCodeSecurity();
-
-        $QR = base64_decode(DNS2D::getBarcodePNG($token, 'QRCODE,M'));
+        try
+        {
+            $QR = base64_decode(DNS2D::getBarcodePNG($token, 'QRCODE,M'));
+        }
+        catch (\Exception $e)
+        {
+            // On fait rien #sale !
+        }
         if(file_exists(public_path('img/billets/logo.png'))) {
             $logo = imagecreatefromstring(file_get_contents(public_path('img/billets/logo.png')));
             $QR = imagecreatefromstring($QR);
