@@ -124,6 +124,4 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
 
 Route::group(['prefix' => 'etupay'], function () {
     Route::get('return', 'EtuPayController@etupayReturn');
-    Route::post('callback', 'EtuPayController@etupayCallback');
-    //Route::get('callback', 'EtuPayController@etupayCallback');
 });

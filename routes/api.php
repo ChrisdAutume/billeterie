@@ -19,5 +19,4 @@ use Illuminate\Http\Request;
 */
 
 Route::post('/etupay/callback', 'EtuPayController@etupayCallback');
-Route::get('/etupay/callback', 'EtuPayController@etupayCallback');
 Route::get('/dons/status', 'DonController@apiGetAmount');
