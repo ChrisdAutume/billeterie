@@ -31,7 +31,7 @@ Accueil
     </div><!-- /.box -->
 
     <div class="box box-default">
-        <div class="box-body">
+        <div class="box-body pages-text">
             @if($content)
                 @markdown($content->text)
             @else

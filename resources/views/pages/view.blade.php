@@ -11,7 +11,7 @@
 @section('content')
 
     <div class="box box-default">
-        <div class="box-body">
+        <div class="box-body pages-text">
             @markdown($page->text)
         </div>
     </div>

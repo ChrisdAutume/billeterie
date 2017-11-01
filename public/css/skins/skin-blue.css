@@ -139,3 +139,9 @@
 .skin-blue.layout-top-nav .main-header > .logo:hover {
   background-color: #3b8ab8;
 }
+
+.pages-text img
+{
+  display: block;
+  margin:auto;
+}
