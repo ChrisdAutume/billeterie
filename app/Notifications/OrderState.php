@@ -17,9 +17,9 @@ class OrderState extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -38,7 +38,7 @@ class OrderState extends Notification
     {
         return (new SlackMessage())
             ->success()
-            ->content($message);
+            ->content($this->message);
     }
 
     /**

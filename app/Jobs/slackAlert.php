@@ -61,6 +61,7 @@ class slackAlert implements ShouldQueue
         }
 
         //renew slack alert
+
         $job = (new slackAlert())
             ->delay(Carbon::now()->addHour(2));
         dispatch($job);
