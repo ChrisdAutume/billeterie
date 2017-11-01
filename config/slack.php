@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'endpoint' => 'https://hooks.slack.com/services/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',
+    'endpoint' => env('SLACK_ENDPOINT', 'Billeterie'),
 
     /*
     |-------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'channel' => '#sie',
+    'channel' => env('SLACK_NAME', 'Billeterie'),
 
     /*
     |-------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'username' => 'Billeterie SIE',
+    'username' => env('SLACK_NAME', 'Billeterie'),
 
     /*
     |-------------------------------------------------------------
@@ -51,7 +51,7 @@ return [
     |
     */
 
-    'icon' => ':campus3:',
+    'icon' => env('SLACK_ICON', ':rotating_light:'),
 
     /*
     |-------------------------------------------------------------
