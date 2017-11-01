@@ -56,19 +56,25 @@ class Order extends Model
 
         foreach ($caddie as $item)
         {
-            $billet = $item['billet'];
-            $options = $item['options'];
+            if($item instanceof Don)
+            {
+                $item->order_id = $this->id;
+                $item->save();
+            } else {
+                $billet = $item['billet'];
+                $options = $item['options'];
 
-            $billet->order_id = $this->id;
-            $billet->save();
+                $billet->order_id = $this->id;
+                $billet->save();
 
-            foreach ($options as $opt) {
-                $billet->options()->save($opt['option'], [
-                    'qty'=>$opt['qty'],
-                    'amount' => $opt['qty']*$opt['option']->price
+                foreach ($options as $opt) {
+                    $billet->options()->save($opt['option'], [
+                        'qty' => $opt['qty'],
+                        'amount' => $opt['qty'] * $opt['option']->price
                     ]);
+                }
+                $billet->sendToMail();
             }
-            $billet->sendToMail();
         }
 
         $this->save();
