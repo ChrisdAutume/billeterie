@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'endpoint' => env('SLACK_ENDPOINT', 'Billeterie'),
+    'endpoint' => env('SLACK_ENDPOINT'),
 
     /*
     |-------------------------------------------------------------

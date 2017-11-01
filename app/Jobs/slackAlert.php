@@ -3,11 +3,15 @@
 namespace App\Jobs;
 
 use App\Models\Guichet;
+use App\Notifications\OrderState;
+use App\SlackHook;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Notification;
 use Maknz\Slack\Facades\Slack;
 use App\Models\Price;
 
@@ -53,7 +57,7 @@ class slackAlert implements ShouldQueue
             if($hour==23)
                 $summary .= "Bonne nuit et a demain =p \n";
 
-            Slack::send($summary);
+            Notification::send(new SlackHook(), new OrderState($summary));
         }
 
         //renew slack alert
