@@ -39,7 +39,7 @@
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: #FFFFFF;
+            color: {{ config('billeterie.billet.text_color') }};
             font-size: 78px;
             font-weight: bold;
         }
@@ -53,7 +53,7 @@
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: #FFFFFF;
+            color: {{ config('billeterie.billet.text_color') }};
             font-size: 78px;
             font-weight: bold;
         }
@@ -67,7 +67,7 @@
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: #FFFFFF;
+            color: {{ config('billeterie.billet.text_color') }};
             font-size: 78px;
             font-weight: bold;
         }
