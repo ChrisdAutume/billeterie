@@ -2,7 +2,7 @@
 
 return [
     'don' => [
-        'enabled' => true,
+        'enabled' => env('DON_ENABLED', false),
         'name' => 'Don de promo',
         'text' => "Cette année pour le don de promo 2017, contribuez à l'amélioration de la vie à l'UTT en offrant aux étudiants des Power Stations, ou stations de rechargement de téléphones, tablettes et ordinateurs !",
         'min'  =>   1000,
