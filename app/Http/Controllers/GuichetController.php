@@ -6,6 +6,7 @@ use App\Mail\GuichetCreated;
 use App\Models\Billet;
 use App\Models\Guichet;
 use Carbon\Carbon;
+use Torann\Hashids\Facade as Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
@@ -80,9 +81,24 @@ class GuichetController extends Controller
         if($request->has('code'))
         {
             $code = urldecode($request->input('code'));
+            /**
             $code = explode('|', $code);
             if(count($code) == 2)
                 $billet = Billet::where('uuid', trim($code[0]))->first();
+             **/
+            $code = Hashids::decode($code);
+
+            if(count($code) < 2)
+            {
+                return response()->json([
+                    'result' => [
+                        'code' => 'error',
+                        'message' => 'Billet inconnu',
+                    ]
+                ]);
+            }
+
+            $billet = Billet::with(['price', 'options'])->find($code[0]);
         }
 
         if(!$billet) {
@@ -95,7 +111,7 @@ class GuichetController extends Controller
             $return = $billet->toArray();
             $return['validated'] = 'already';
             return response()->json($return);
-        } elseif (isset($code) && $code[1] != $billet->getBilletHash())
+        } elseif (isset($code) && $billet->getBilletHash() != $code[1])
         {
             return response()->json([
                 'validated' => false,
@@ -122,6 +138,7 @@ class GuichetController extends Controller
     public function getSellGuichet(string $uuid)
     {
         $guichet = Guichet::where('uuid', $uuid)
+            ->where('type', 'sell')
             ->where('start_at','<=',Carbon::now('Europe/Paris'))
             ->where('end_at','>=',Carbon::now('Europe/Paris'))->first();
         
