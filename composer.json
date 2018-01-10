@@ -17,7 +17,9 @@
         "andreasindal/laravel-markdown": "^1.1",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.3.0",
-        "torann/hashids": "^2.0"
+        "torann/hashids": "^2.0",
+        "barryvdh/laravel-cors": "^0.10.0",
+        "doctrine/dbal": "^2.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
