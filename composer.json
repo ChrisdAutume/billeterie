@@ -10,7 +10,7 @@
         "barryvdh/laravel-debugbar": "^2.3",
         "kblais/laravel-uuid": "^0.1.0",
         "milon/barcode": "^5.3",
-        "barryvdh/laravel-dompdf": "^0.8.0",
+        "barryvdh/laravel-dompdf": "dev-master",
         "guzzlehttp/guzzle":"6.*",
         "maknz/slack-laravel": "^1.0",
         "cviebrock/eloquent-sluggable": "^4.2",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6af84f6a64e91b34af8c06121c12be02",
+    "content-hash": "85a3737f5a277158cf7d75d06f42cb06",
     "packages": [
         {
             "name": "andreasindal/laravel-markdown",
@@ -163,16 +163,16 @@
         },
         {
             "name": "barryvdh/laravel-dompdf",
-            "version": "v0.8.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-dompdf.git",
-                "reference": "3b2235e589616331d68482d61b7763789a2600fe"
+                "reference": "3425ced8428ae419a2760ed4e82696e85ab52206"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-dompdf/zipball/3b2235e589616331d68482d61b7763789a2600fe",
-                "reference": "3b2235e589616331d68482d61b7763789a2600fe",
+                "url": "https://api.github.com/repos/barryvdh/laravel-dompdf/zipball/3425ced8428ae419a2760ed4e82696e85ab52206",
+                "reference": "3425ced8428ae419a2760ed4e82696e85ab52206",
                 "shasum": ""
             },
             "require": {
@@ -215,7 +215,7 @@
                 "laravel",
                 "pdf"
             ],
-            "time": "2017-07-29T19:01:17+00:00"
+            "time": "2017-10-04T07:19:27+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -5276,7 +5276,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "barryvdh/laravel-dompdf": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
