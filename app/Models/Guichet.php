@@ -31,6 +31,11 @@ class Guichet extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function billets_validated()
+    {
+        return $this->belongsToMany(Billet::class);
+    }
+
     public function billets()
     {
         return $this->hasManyThrough(Billet::class, Order::class);
@@ -38,8 +43,36 @@ class Guichet extends Model
 
     public function getPrices()
     {
-        if(is_array($this->acl))
-            return Price::whereIn('id', $this->acl)->get();
+        return $this->getAcl();
+    }
+
+    public function getAcl()
+    {
+        if($this->type == 'sell')
+        {
+            if(is_array($this->acl))
+                return Price::whereIn('id', $this->acl)->get();
+        } else if($this->type == 'validation')
+        {
+            if(is_array($this->acl))
+            {
+                $rtn = [];
+                foreach ($this->acl as $acl)
+                {
+                    $acl= explode(':', $acl);
+                    switch ($acl[0])
+                    {
+                        case 'billet':
+                            $rtn[] = Billet::find($acl[1]);
+                            break;
+                        case 'option':
+                            $rtn[] = Option::find($acl[1]);
+                            break;
+                    }
+                    return $acl;
+                }
+            }
+        }
     }
     public function generateUuid()
     {

@@ -43,6 +43,10 @@ class Billet extends Model
         if(!isset($this->attributes['uuid']))
             $this->generateUuid();
     }
+    public function guichets()
+    {
+        return $this->belongsToMany(Guichet::class);
+    }
     public function getBilletHash()
     {
         $crc = crc32($this->updated_at.$this->name.$this->surname.$this->price->id);
