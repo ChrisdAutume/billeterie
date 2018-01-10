@@ -187,6 +187,7 @@ class GuichetController extends Controller
                 $billet->mail = $inputs['mail'][$id];
                 $billet->price_id = $value;
                 $billet->save();
+                $billet->sendToMail();
                 $amount += Price::find($value)->price;
             }
         }
