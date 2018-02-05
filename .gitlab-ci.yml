@@ -1,0 +1,36 @@
+###############################################################################
+#                               Variables                                     #
+###############################################################################
+variables:
+    DOKKU_HOST: 'node1.dokku.uttnetgroup.net'
+    PROJECT_NAME: 'yourproject.utt.fr'
+
+###############################################################################
+#                                Templates                                    #
+###############################################################################
+.deploy_template: &deploy_definition
+  image: $CI_REGISTRY/sia/docker-images/deployer
+  stage: deploy
+  before_script:
+    # Add ssh private key $SSH_DEPLOY_KEY
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_DEPLOY_KEY")
+    # SSH config
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    # Add dokku to known hosts
+    - ssh-keyscan -H $DOKKU_HOST >> ~/.ssh/known_hosts
+  script:
+    - git push dokku@$DOKKU_HOST:$PROJECT_NAME HEAD:refs/heads/master -f
+
+###############################################################################
+#                                  Stages                                     #
+###############################################################################
+stages:
+  - deploy
+
+deploy_prod:
+  <<: *deploy_definition
+  only:
+    - /^deploy\/.*$/
+  environment: production
