@@ -3,7 +3,7 @@
 ###############################################################################
 variables:
     DOKKU_HOST: 'node1.dokku.uttnetgroup.net'
-    PROJECT_NAME: 'yourproject.utt.fr'
+    PROJECT_NAME: 'billetterie.gala.utt.fr'
 
 ###############################################################################
 #                                Templates                                    #
