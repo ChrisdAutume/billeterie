@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\sendMailing;
 use App\Console\Commands\slackStats;
+use App\Console\Commands\setAdmin;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,8 +16,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\slackStats::class,
+        slackStats::class,
         sendMailing::class,
+        setAdmin::class,
     ];
 
     /**
