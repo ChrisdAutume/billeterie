@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Excel;
+
 
 class GuichetController extends Controller
 {
@@ -106,7 +108,6 @@ class GuichetController extends Controller
         // Cache it for 1 minute
         $result = Cache::remember('guichet_offline_data', 1, function () {
             $billets = Billet::with('options')->with('price')->get();
-            $billets->toArray();
             $result = [];
             foreach($billets as $billet) {
 
@@ -145,6 +146,43 @@ class GuichetController extends Controller
             'reducedCodeLength' => 2,
             'billets' => $result,
         ]);
+    }
+
+    /**
+     * Export a CSV of billets to validate
+     */
+    public function getExport(Request $request)
+    {
+        Auth::user()->requireLevel(2);
+
+        $billets = Billet::with('options')->with('price')->orderBy('name', 'asc')->get();
+        $result = [];
+        foreach($billets as $billet) {
+
+            $options = '';
+            foreach ($billet->options as $option)
+            {
+                if($options)
+                    $options .= ', ';
+
+                $options .= $option->pivot->qty .' '.$option->name;
+            }
+
+            $result[] = [
+                'id' => $billet->id,
+                'Prénom' => $billet->surname,
+                'Nom' => $billet->name,
+                'Email' => $billet->mail,
+                'Options' => $options,
+                'Validé' => $billet->validated_at ? 'X' : '',
+            ];
+        }
+
+        return Excel::create('Billets', function ($file) use ($result) {
+            $file->sheet('', function ($sheet) use ($result) {
+                $sheet->fromArray($result);
+            });
+        })->export('csv');
     }
 
     public function validateTicket(Request $request)

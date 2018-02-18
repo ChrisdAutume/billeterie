@@ -54,7 +54,8 @@
                                                     @endif
                                                     <li><a href="{{ route('admin_guichet') }}">Validation entrée</a></li>
                                                     <li><a href="{{ route('admin_orders_create') }}">Vente manuelle</a></li>
-                                                        <li><a href="{{ route('admin_express_orders') }}">Vente express</a></li>
+                                                    <li><a href="{{ route('admin_express_orders') }}">Vente express</a></li>
+                                                    <li><a href="{{ route('guichet_export') }}">Télécharger la liste des billets</a></li>
                                                 </ul>
                                             </li>
                                     @endif

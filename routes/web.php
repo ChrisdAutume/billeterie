@@ -85,6 +85,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::post('guichet/create', 'GuichetController@postAdminGuichet')->name('post_admin_guichet_create');
 
     Route::get('guichet', 'GuichetController@getIndex')->name('admin_guichet');
+    Route::get('guichet/export', 'GuichetController@getExport')->name('guichet_export');
     Route::get('guichet/offlineData', 'GuichetController@getOfflineData')->name('guichet_offline_data');
     Route::post('guichet/offlineValidation', 'GuichetController@postOfflineValidation')->name('guichet_offline_validation');
     Route::get('guichet/validate', 'GuichetController@validateTicket')->name('guichet_validate');
