@@ -13,6 +13,8 @@ use App\Models\Order;
 use App\Models\Price;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class GuichetController extends Controller
 {
@@ -63,11 +65,86 @@ class GuichetController extends Controller
         return view('guichet.home');
     }
 
-    public function getAutocomplete(Request $request)
+    /**
+     * Js bulk validation for gichet
+     * expect a json object with `id => datetime` inside
+     */
+    public function postOfflineValidation(Request $request)
     {
         Auth::user()->requireLevel(2);
-        $result = Billet::select('uuid', 'name', 'surname', 'validated_at', 'id')->where("name","LIKE","%{$request->input('q')}%")->orWhere("surname","LIKE","%{$request->input('q')}%")->get();
-        return response()->json($result);
+        $input = $request->all();
+
+        // Find all given billets
+        $billets = Billet::find(array_keys($input));
+        $count = 0;
+        foreach ($billets as $billet) {
+            $date = new \DateTime($input[$billet->id]);
+            if ($billet->validated_at == null) {
+                $billet->validated_at = $date;
+                $billet->save();
+                $count++;
+            }
+            else if($billet->validated_at != $date) {
+                // Warning someone use a ticket twice
+                Log::warning('Billet '. $billet->name . ' ' . $billet->surname . ' ('.$billet->id.') has been validated more than once via offline mode', [ 'billet' => $billet ]);
+            }
+        }
+
+        return response()->json([
+            'updated' => $count,
+        ]);
+    }
+
+    /**
+     * Get data used for autocompletion and offline validation
+     */
+    public function getOfflineData(Request $request)
+    {
+        Auth::user()->requireLevel(2);
+
+
+        // Cache it for 1 minute
+        $result = Cache::remember('guichet_offline_data', 1, function () {
+            $billets = Billet::with('options')->with('price')->get();
+            $billets->toArray();
+            $result = [];
+            foreach($billets as $billet) {
+
+                // Give only partial security code to avoid a disclosure of all
+                // tickets code in case of a gichet corruption
+                // Even with -3 characters, we have no collisions on a real database of 1328 tickets
+                // But if we remove to much characters, it will be too easy to found
+                // a working partial code. So we remove 2 chars.
+                $code = substr($billet->getQrCodeSecurity(), 0, -2);
+
+                $options = '';
+                foreach ($billet->options as $option)
+                {
+                    if($options)
+                        $options .= ', ';
+
+                    $options .= $option->pivot->qty .' '.$option->name;
+                }
+
+                $result[] = [
+                    'id' => $billet->id,
+                    'name' => $billet->name,
+                    'surname' => $billet->surname,
+                    'mail' => $billet->mail,
+                    'validated_at' => $billet->validated_at ? $billet->validated_at->format(\DateTime::ATOM) : null,
+                    'code' => $code,
+                    'options' => $options,
+                ];
+            }
+
+            return $result;
+        });
+
+        return response()->json([
+            'serverTime' => date(\DateTime::ATOM),
+            'reducedCodeLength' => 2,
+            'billets' => $result,
+        ]);
     }
 
     public function validateTicket(Request $request)
@@ -124,10 +201,13 @@ class GuichetController extends Controller
             $billet->save();
             $return = $billet->toArray();
 
-            $return['options'] = "";
+            $return['options'] = '';
             foreach ($billet->options as $option)
             {
-                $return['options'] .= ' '.$option->pivot->qty .' '.$option->name;
+                if($return['options'])
+                    $return['options'] .= ', ';
+
+                $return['options'] .= $option->pivot->qty .' '.$option->name;
             }
 
             $return['validated'] = true;
@@ -141,7 +221,7 @@ class GuichetController extends Controller
             ->where('type', 'sell')
             ->where('start_at','<=',Carbon::now('Europe/Paris'))
             ->where('end_at','>=',Carbon::now('Europe/Paris'))->first();
-        
+
         if(!$guichet)
         {
             Session::flash('error', "Le guichet n'existe pas ou n'est pas actif");
