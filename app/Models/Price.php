@@ -107,9 +107,13 @@ class Price extends Model
                     $count_in_basket = 0;
                     //Count item in basket
                     if($billets = session('billets'))
-                        foreach ($billets as $billet)
-                            if(($billet instanceof Billet) && ($billet->price_id == $this->id) && ($billet->mail == $mail))
+                        foreach ($billets as $item) {
+                            if (isset($item['billet']))
+                                $billet = $item['billet'];
+
+                            if (($billet instanceof Billet) && ($billet->price_id == $this->id) && ($billet->mail == $mail))
                                 $count_in_basket++;
+                        }
                     if(($count_already_buy + $count_in_basket) < $liste->pivot->max_order)
                         return true;
                 }
