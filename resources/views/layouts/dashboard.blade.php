@@ -122,7 +122,7 @@
 
             <footer class="main-footer">
                 <div class="container">
-                    <div class="pull-right hidden-xs">
+                    <div class="pull-right">
                         <a href="{{ route('view_page', ['slug'=>'cgu-cgv']) }}">CGU - CGV</a>
                     </div>
                     <strong>En cas de problème,</strong> <a href="mailto:{{ config('billeterie.contact') }}">contactez nous</a>
