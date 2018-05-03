@@ -87,8 +87,6 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
     <script type="application/javascript">
-        var path = "{{ route('guichet_autocomplete') }}";
-
         jQuery(document).ready(function($) {
 
             //Show notifications
