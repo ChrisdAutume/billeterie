@@ -25,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\GuichetCreated' => [
             'App\Listeners\SendCreatedGuichetNotification',
         ],
+        'Illuminate\Mail\Events\MessageSent' => [
+            'App\Listeners\mailSent',
+        ],
 
 
     ];

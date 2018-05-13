@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\sendMailing;
+use App\Console\Commands\sendTickets;
 use App\Console\Commands\slackStats;
 use App\Console\Commands\setAdmin;
 use Illuminate\Console\Scheduling\Schedule;
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
         slackStats::class,
         sendMailing::class,
         setAdmin::class,
+        sendTickets::class,
     ];
 
     /**
