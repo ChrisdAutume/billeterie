@@ -147,17 +147,5 @@ foreach ($billet->options as $option)
     <div id="surname">{{ ucfirst(strtolower($billet->surname)) }}</div>
     <div id="type">{{ ucfirst(strtolower($billet->price->name)) }}</div>
 </div>
-<!--
-<div class="page">
-    <img src="data:{{ $billet->price->file->mime }};base64,{{ $billet->price->file->data }}" alt="">
-    <div id="code">
-        <img src="data:image/png;base64,{{ $billet->base64QrCode() }}" alt="">
-        <p id="id">{{ $billet->getQrCodeSecurity() }}</p>
-    </div>
-    <div id="name">{{ strtoupper($billet->name) }}</div>
-    <div id="surname">{{ ucfirst(strtolower($billet->surname)) }}</div>
-    <div id="type">{{ ucfirst(strtolower($billet->price->name)) }}</div>
-</div>
--->
 </body>
 </html>
