@@ -5,16 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FileStorage;
 use App\Models\File;
 use Illuminate\Support\Facades\Session;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class FileController extends Controller
 {
     public function upload(FileStorage $request)
     {
         $f = $request->file('file');
+
+        // Let's optimise the image:
+        $optimizerChain = OptimizerChainFactory::create();
+        $optimizerChain->optimize($f->getRealPath());
+        clearstatcache();
+
         $file = new File($request->file());
         $file->name = $f->getClientOriginalName();
         $file->mime = $f->getMimeType();
-        $file->size = $f->getSize();
+        $file->size = filesize($f->getRealPath());
         $file->data = base64_encode(file_get_contents($f->getRealPath()));
         $file->save();
 
