@@ -127,7 +127,7 @@ class Billet extends Model
     {
         $billet = view('billets.billet', ['billet'=>$this])->render();
         $billet = preg_replace('/>\s+</', '><', $billet);
-        return PDF::loadHTML($billet)->setPaper([0,0,1010,1850], 'landscape')->setWarnings(true);
+        return PDF::loadHTML($billet)->setPaper('A4')->setWarnings(true);
     }
 
     public function sendToMail()
