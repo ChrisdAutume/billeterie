@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Events\BilletCreated;
-use App\Events\BilletUpdated;
 use App\Mail\BilletEmited;
+use App\Mail\BilletUpdated;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Torann\Hashids\Facade as Hashids;
 use Illuminate\Database\Eloquent\Model;
@@ -18,10 +17,6 @@ use Barryvdh\DomPDF\Facade as PDF;
 class Billet extends Model
 {
     use SoftDeletes;
-
-    protected $events = [
-        'updated' => BilletUpdated::class,
-    ];
 
     protected $dates = [
         'created_at',
@@ -131,11 +126,15 @@ class Billet extends Model
         return PDF::loadHTML($billet)->setPaper('A4')->setWarnings(true);
     }
 
-    public function sendToMail()
+    public function sendToMail($update=false)
     {
         if($this->price()->first()->sendBillet)
-            Mail::to($this->mail)->queue(new BilletEmited($this));
+            if(!$update)
+                Mail::to($this->mail)->queue(new BilletEmited($this));
+            else
+                Mail::to($this->mail)->queue(new BilletUpdated($this));
     }
+
 
     public function setFieldsAttribute($value)
     {

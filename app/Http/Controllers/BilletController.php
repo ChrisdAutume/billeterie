@@ -22,7 +22,9 @@ class BilletController extends Controller
     {
         $billet->fill($request->input());
         $billet->save();
-        $request->session()->flash('success', "Billet mis à jour !");
+
+        $billet->sendToMail(true);
+        $request->session()->flash('success', "Billet mis à jour et envoyé par mail !");
 
         return redirect()->back();
     }

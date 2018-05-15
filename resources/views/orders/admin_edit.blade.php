@@ -61,7 +61,7 @@
                     <div class="col-lg-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-euro"></i></span>
-                            <input type="number" class="form-control" name="mail" placeholder="Montant" value="{{ $order->price }}">
+                            <input type="number" class="form-control" name="price" placeholder="Montant" value="{{ $order->price }}">
                         </div>
                     </div>
                 </div>
