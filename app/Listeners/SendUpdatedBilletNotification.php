@@ -28,7 +28,7 @@ class SendUpdatedBilletNotification implements ShouldQueue
      */
     public function handle(BilletUpdated $event)
     {
-        if(!$event->billet->validated_at)
+        if(!$event->billet->validated_at && !$event->billet->sent_at)
         {
             if($event->billet->price()->first()->sendBillet)
                 Mail::to($event->billet->mail)->queue(new \App\Mail\BilletUpdated($event->billet));

@@ -63,6 +63,11 @@ style="background-color:#F71030;color:#ffffff;display:inline-block;font-family:s
         $this->subject($this->parseText($this->template->title, $mail_data));
         $content = $this->parseTextFromMarkdown($this->template->content, $mail_data);
 
+        $billet = $this->billet;
+        $this->withSwiftMessage(function (\Swift_Message $message) use ($billet) {
+            $message->billet_id = $billet->id;
+        });
+
         // On n'envoi plus de pdf => téléchargement + QrCode
         return $this->view('emails.emails')
             ->with([
