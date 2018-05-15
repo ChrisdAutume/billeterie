@@ -26,6 +26,7 @@ class Billet extends Model
     protected $dates = [
         'created_at',
         'validated_at',
+        'sent_at',
         'updated_at',
         'deleted_at'
     ];
@@ -49,7 +50,7 @@ class Billet extends Model
     }
     public function getBilletHash()
     {
-        $crc = crc32($this->updated_at.$this->name.$this->surname.$this->price->id);
+        $crc = crc32($this->name.$this->surname.$this->price->id);
         return substr($crc, -4);
     }
     public function getQrCodeSecurity()
@@ -64,7 +65,7 @@ class Billet extends Model
 
     public function getDownloadSecurity()
     {
-        return sha1($this->updated_at.$this->name.$this->surname.$this->uuid.$this->price->id);
+        return sha1($this->name.$this->surname.$this->uuid.$this->price->id);
     }
 
     public function generateUuid()
