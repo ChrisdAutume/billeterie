@@ -22,6 +22,8 @@ class EtuPayController extends Controller
             case 'PAID':
             case 'AUTHORISATION':
                 $request->session()->flash('success', "Le paiment a bien été accepté, vous recevrez prochainement une confirmation via mail.");
+                $order = Order::find($callback->service_data);
+                $request->session()->flash('order_validated', $order);
                 break;
             case 'REFUSED':
                 $request->session()->flash('error', "Votre commande a été annulé suite au refus de votre banque !");

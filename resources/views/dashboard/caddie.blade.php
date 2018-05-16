@@ -111,3 +111,28 @@
         </div>
     </div>
 @endsection
+
+@section('subpiwik')
+    @if(session('billets'))
+    @foreach(session('billets') as $row)
+    _paq.push(['addEcommerceItem',
+    "{{ $row['billet']->price->id }}",
+    "{{ $row['billet']->price->name }}",
+    ["price"],
+    {{ $row['billet']->price->price/100 }},
+    1 // (optional, default to 1) Product quantity
+    ]);
+        @foreach($row['options'] as $opt)
+        _paq.push(['addEcommerceItem',
+        "{{ $opt['option']->id }}",
+        "{{ $opt['option']->name }}",
+        ["options"],
+        {{ $opt['option']->price/100 }},
+        {{ $opt['qty'] }} // (optional, default to 1) Product quantity
+        ]);
+        @endforeach
+    @endforeach
+    _paq.push(['trackEcommerceCartUpdate',
+    {{ round($price/100,2) }}]);
+    @endif
+@endsection
