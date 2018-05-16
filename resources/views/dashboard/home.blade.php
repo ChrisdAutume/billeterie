@@ -48,3 +48,34 @@ Accueil
         </div>
 </div>
 @endsection
+
+@section('subpiwik')
+    @if (Session::has('order_validated'))
+        @foreach(Session::get('order_validated')->billets as $row)
+            _paq.push(['addEcommerceItem',
+            "{{ $row->price->id }}",
+            "{{ $row->price->name }}",
+            ["price"],
+            {{ $row->price->price/100 }},
+            1 // (optional, default to 1) Product quantity
+            ]);
+            @foreach($row->options as $opt)
+                _paq.push(['addEcommerceItem',
+                "{{ $opt->id }}",
+                "{{ $opt->name }}",
+                ["options"],
+                {{ $opt->pivot->amount/100 }},
+                {{ $opt->pivot->qty }} // (optional, default to 1) Product quantity
+                ]);
+            @endforeach
+        @endforeach
+    _paq.push(['trackEcommerceOrder',
+    "{{ Session::get('order_validated')->id }}",
+    {{ Session::get('order_validated')->price / 100 }}, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount)
+    {{ Session::get('order_validated')->price / 100 }}, // (optional) Order sub total (excludes shipping)
+    0, // (optional) Tax amount
+    0, // (optional) Shipping amount
+    false // (optional) Discount offered (set to false for unspecified parameter)
+    ]);
+    @endif
+@endsection
