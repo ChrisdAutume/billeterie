@@ -90,7 +90,7 @@
                         <td>{{ $guichet->id }}</td>
                         <td>{{ $guichet->name }}</td>
                         <td>{{ $guichet->mail }}</td>
-                        <td>@foreach($guichet->getPrices() as $price){{ $price->name }}, @endforeach</td>
+                        <td> @if($guichet->type == 'sell') {{ $guichet->getPrices()->implode('name',', ') }} @endif</td>
                         <td>{{ $guichet->start_at }} - {{ $guichet->end_at }}</td>
                         <td>Total: {{ $guichet->billets->count() }}
                             <ul>

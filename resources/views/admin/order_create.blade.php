@@ -92,7 +92,7 @@
                     <div class="form-group">
                         <label class="col-lg-2 text-right">Type de billet</label>
                         <div class="col-lg-10">
-                            <select class="form-control billet_select" name="price[]">
+                            <select class="form-control" name="price[]">
                                 @foreach($prices as $price)
                                     <option price="{{ $price->price/100 }}" value="{{ $price->id }}">{{ $price->name }} ({{ $price->price/100 }}€)</option>
                                 @endforeach
@@ -101,20 +101,20 @@
                     </div>
 
                     @foreach($prices as $price)
+                        @if( ($options = $price->optionsSellable()->where('isMandatory', false)->orderBy('name')->get()) && count($options) > 0)
                     <div class="form-group options_prices price_options_{{ $price->id }}">
-                        <label class="col-lg-2 text-right">Option disponible</label>
                         <div class="col-lg-10">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>Options</th>
                                     <th>Prix</th>
                                 </tr>
                                 </thead>
-                            @foreach($price->optionsSellable()->where('isMandatory', false)->orderBy('name')->get() as $option)
+                            @foreach($options as $option)
                                 <tr class="vert-align price price_{{ $price->id }}">
                                     <td>
-                                        <select name="option_{{ $price->id }}_{{ $option->id }}" @if($option->available() == 0) disabled @endif>
+                                        <select name="option_1_{{ $option->id }}" class="options_selector" price="{{ $option->price/100 }}" @if($option->available() == 0) disabled @endif>
                                             @for($i=0; $i <= (($option->max_choice>$option->available())?$option->available():$option->max_choice); $i++)
                                                 <option value="{{$i}}">{{$i}}</option>
                                             @endfor
@@ -129,6 +129,7 @@
                             </table>
                         </div>
                     </div>
+                        @endif
                     @endforeach
                 </fieldset>
                 <a href="#" class="btn btn-info form-control" id='btnAdd'> Ajouter un billet ! </a>
@@ -165,13 +166,24 @@
         updatePrice = function () {
            var total = 0;
             $(".options_prices").hide();
-            $('.form-group select option:selected').each(function() {
-                console.log($(this).val());
+            $('select[name="price[]"] option:selected').each(function() {
                 total += parseInt($(this).attr('price'));
+                $(this).parentsUntil('fieldset').nextAll(".options_prices" ).hide();
+                $(this).parentsUntil('fieldset').nextAll(".price_options_"+ parseInt($(this).attr('value'))).show();
             });
-            $('#total_price').html(total + ' €');
+
+            $('.options_selector:visible').each(function() {
+                total += parseInt($(this).attr('price') * $(this).val());
+            });
+
+            //Options
+
+            $('#total_price').html(total.toString() + " €");
+
+            $('select[name="price[]"]').on('change', function(){ updatePrice() });
+            $('.options_selector').on('change', function(){ updatePrice() });
         };
-        $('.form-group select').on('change', function(){ updatePrice() });
+
         $('#btnAdd').click(function (event) {
             event.preventDefault();
             var num = $('.billet').length,
@@ -179,12 +191,15 @@
                     newElem = $('#billet' + num).clone().attr('id', 'billet' + newNum).fadeIn('slow');
             newElem.find('legend').text('Billet #' + newNum);
             newElem.find("input").val("");
-            $('#billet' + num).after(newElem);
-            $('#billet' + num +' .form-control').focus();
-            $('.billet select').on('change', function(){ updatePrice() });
-            updatePrice();
+            newElem.find(".options_prices select").each(function () {
+                $(this).attr('name', $(this).attr('name').replace(/option_[0-9]+_([0-9]+)/g, 'option_'+newNum+'_$1'));
+            });
 
+            $('#billet' + num).after(newElem);
+            $('#billet' + newNum).next('input').focus();
+            updatePrice('.options_prices select');
         });
+
         updatePrice();
 
         // Pré-remplissage
