@@ -15,9 +15,9 @@
                 <span class="info-box-icon @if($order->state == 'paid') bg-green @else bg-red @endif"><i class="fa fa-euro"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Paiement</span>
-                    <span class="info-box-number">{{ number_format($order->price/100, 2, ',', ' ')}} €</span>
                     <span class="info-box-text">{{ \App\Models\Order::$states[$order->state] }} @if($order->mean_of_paiment) - {{ \App\Models\Order::$means[$order->mean_of_paiment] }} @endif</span>
+                    <span class="info-box-number">{{ number_format($order->price/100, 2, ',', ' ')}} €</span>
+                    <span class="info-box-more">@if($order->mean_of_paiment == 'online')#{{ $order->transaction_id }} @endif</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -98,7 +98,7 @@
             <h3 class="box-title">Billet n°{{ $billet->uuid }}</h3>
             <div class="box-tools pull-right">
                 <div class="btn-group">
-                    <a href="{{ route('admin_billet_delete', ['billet' => $billet]) }}" class="btn btn-box-tool"><i class="fa fa-close"></i>Supprimer</a>
+                    <a href="{{ route('admin_billet_delete', ['billet' => $billet]) }}" class="btn btn-box-tool"><i class="fa fa-close" style="color:red"></i>Supprimer</a>
                 </div>
             </div>
         </div>
