@@ -295,9 +295,14 @@ class GuichetController extends Controller
         $order->save();
 
         $inputs = $request->input();
+        $i=0;
         foreach ($inputs['price'] as $id=>$value)
         {
+            $i++;
             if(in_array($value,$guichet->acl)) {
+
+                $price = Price::find($value);
+
                 $billet = new Billet();
                 $billet->order_id = $order->id;
                 $billet->name = $inputs['name'][$id];
@@ -306,9 +311,44 @@ class GuichetController extends Controller
                 $billet->price_id = $value;
                 $billet->save();
                 $billet->sendToMail();
-                $amount += Price::find($value)->price;
+                $amount += $price->price;
+
+                foreach ($price->optionsSellable as $option)
+                {
+                    $opt = false;
+                    $key_value = (int) $request->input('option_'.$i.'_'.$option->id);
+                    if($request->has('option_'.$i.'_'.$option->id) && $key_value > 0 && !$option->isMandatory)
+                    {
+                        if($key_value <= $option->available() && $key_value >= $option->min_choice && $key_value<= $option->max_choice) {
+                            $amount += $key_value * $option->price;
+                            $opt = [
+                                'option' => $option,
+                                'qty' => $key_value
+                            ];
+                        }
+
+                    } else if($option->isMandatory && ($option->min_choice <= $option->available()))
+                    {
+                        // Ajout automatique, si option obligatoire
+                        $amount += $key_value * $option->price;
+
+                        $opt = [
+                            'option' => $option,
+                            'qty' => $option->min_choice
+                        ];
+                    }
+
+                    if ($opt)
+                    {
+                        $billet->options()->save($opt['option'], [
+                            'qty' => $opt['qty'],
+                            'amount' => $opt['qty'] * $opt['option']->price
+                        ]);
+                    }
+                }
             }
         }
+
 
         $order->price = $amount;
         $order->mean_of_paiment = $request->input('paiment');
