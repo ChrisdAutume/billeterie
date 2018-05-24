@@ -39,7 +39,7 @@
             <h3 class="box-title">Coordonnée de l'acheteur</h3>
         </div>
         <div class="box-body" id="buyer">
-            <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+            <form class="form-horizontal" action="" method="post" enctype="application/x-www-form-urlencoded">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name" class="col-lg-2 text-right">Nom</label>
@@ -114,7 +114,7 @@
                             @foreach($options as $option)
                                 <tr class="vert-align price price_{{ $price->id }}">
                                     <td>
-                                        <select name="option_1_{{ $option->id }}" class="options_selector" price="{{ $option->price/100 }}" @if($option->available() == 0) disabled @endif>
+                                        <select name="option_1_{{ $price->id }}_{{ $option->id }}" class="options_selector" price="{{ $option->price/100 }}" @if($option->available() == 0) disabled @endif>
                                             @for($i=0; $i <= (($option->max_choice>$option->available())?$option->available():$option->max_choice); $i++)
                                                 <option value="{{$i}}">{{$i}}</option>
                                             @endfor
@@ -188,11 +188,12 @@
             event.preventDefault();
             var num = $('.billet').length,
                     newNum = new Number(num + 1),
-                    newElem = $('#billet' + num).clone().attr('id', 'billet' + newNum).fadeIn('slow');
+                    $elem = $('#billet' + num).data( "arr", [ 1 ] ),
+                    newElem = $elem.clone(true).data( "arr", $.extend( [], $elem.data( "arr" ) ) ).attr('id', 'billet' + newNum);
             newElem.find('legend').text('Billet #' + newNum);
             newElem.find("input").val("");
             newElem.find(".options_prices select").each(function () {
-                $(this).attr('name', $(this).attr('name').replace(/option_[0-9]+_([0-9]+)/g, 'option_'+newNum+'_$1'));
+                $(this).prop('name', $(this).prop('name').replace(/option_[0-9]+_([0-9]+)/g, 'option_'+newNum+'_$1'));
             });
 
             $('#billet' + num).after(newElem);
