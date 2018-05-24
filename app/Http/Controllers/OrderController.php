@@ -248,14 +248,13 @@ class OrderController extends Controller
             $billet->mail = $inputs['mail'][$id];
             $billet->price_id = $value;
             $billet->save();
-            $billet->sendToMail();
             $amount += $price->price;
 
             foreach ($price->optionsSellable as $option)
             {
                 $opt = false;
-                $key_value = (int) $request->input('option_'.$i.'_'.$option->id);
-                if($request->has('option_'.$i.'_'.$option->id) && $key_value > 0 && !$option->isMandatory)
+                $key_value = (int) $request->input('option_'.$i.'_'.$price->id.'_'.$option->id);
+                if($request->has('option_'.$i.'_'.$price->id.'_'.$option->id) && $key_value > 0 && !$option->isMandatory)
                 {
                     if($key_value <= $option->available() && $key_value >= $option->min_choice && $key_value<= $option->max_choice) {
                         $amount += $key_value * $option->price;
@@ -284,6 +283,7 @@ class OrderController extends Controller
                     ]);
                 }
             }
+            $billet->sendToMail();
         }
 
         $order->price = $amount;
