@@ -9,6 +9,7 @@ use App\Models\Option;
 use App\Models\Price;
 use Carbon\Carbon;
 use DebugBar\DebugBar;
+use Torann\Hashids\Facade as Hashids;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -18,6 +19,59 @@ use Illuminate\Support\Facades\Auth;
 
 class BilletController extends Controller
 {
+    public function apiGetBillet(Request $request)
+    {
+        if(!$request->has(['code', 'name']))
+        {
+            return response()->json([
+                'error' => 'Missing data',
+            ], 404);
+        }
+
+        $code = urldecode($request->get('code'));
+        $code = Hashids::decode($code);
+
+        if(count($code) < 2)
+            return response()->json([
+                'error' => 'Incorrect data',
+            ], 404);
+
+        $billet = Billet::with(['price', 'options'])->find($code[0]);
+        if(!$billet)
+            return response()->json([
+                'error' => 'Billet not found',
+            ], 404);
+
+        if($code != $billet->getQrCodeSecurity())
+            if(!$billet)
+                return response()->json([
+                    'error' => 'Security code not valid',
+                ], 403);
+
+        if(str_replace (' ', '', strtoupper($request->get('name'))) != str_replace (' ', '', strtoupper($billet->name)))
+            if($code != $billet->getQrCodeSecurity())
+                if(!$billet)
+                    return response()->json([
+                        'error' => 'Name invalid',
+                    ], 403);
+
+        //Let's display result
+        $options = [];
+        foreach ($billet->options as $opt)
+        {
+            $options[] = $opt->name;
+        }
+        return response()->json([
+            'data' => [
+                'qrcode' => $billet->getQrCodeSecurity(),
+                'name'  => $billet->name,
+                'surname' => $billet->surname,
+                'price' => $billet->price->name,
+                'options' => $options,
+                'created_at' => $billet->created_at
+            ]
+        ], 200);
+    }
     public function adminPostBilletEdit(Billet $billet, Request $request)
     {
         $billet->fill($request->input());
