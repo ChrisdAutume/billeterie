@@ -28,8 +28,8 @@ class BilletController extends Controller
             ], 404);
         }
 
-        $code = urldecode($request->get('code'));
-        $code = Hashids::decode($code);
+        $get_code = urldecode($request->get('code'));
+        $code = Hashids::decode($get_code);
 
         if(count($code) < 2)
             return response()->json([
@@ -42,18 +42,15 @@ class BilletController extends Controller
                 'error' => 'Billet not found',
             ], 404);
 
-        if($code != $billet->getQrCodeSecurity())
-            if(!$billet)
-                return response()->json([
+        if($get_code != $billet->getQrCodeSecurity())
+            return response()->json([
                     'error' => 'Security code not valid',
                 ], 403);
 
         if(str_replace (' ', '', strtoupper($request->get('name'))) != str_replace (' ', '', strtoupper($billet->name)))
-            if($code != $billet->getQrCodeSecurity())
-                if(!$billet)
-                    return response()->json([
-                        'error' => 'Name invalid',
-                    ], 403);
+            return response()->json([
+                    'error' => 'Name invalid',
+                ], 403);
 
         //Let's display result
         $options = [];
