@@ -23,7 +23,7 @@ Route::get('/file/{file}', 'FileController@display')->name('view_file');
 Route::get('/download/{securite}/{billet}.pdf', 'BilletController@download')->name('download_billet');
 
 #Dev
-Route::get('/dev/login/{user}', 'UserController@loginInDev')->name('admin_dev_login');
+Route::get('/dev/login/is2Choo7caijieguogied6heaThaibana1ahrohzohg0aiVieciePh9icaSuo4ei/{user}', 'UserController@loginInDev')->name('admin_dev_login');
 
 
 // GUICHET

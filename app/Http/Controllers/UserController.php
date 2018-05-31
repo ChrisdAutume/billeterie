@@ -24,10 +24,6 @@ class UserController extends Controller
 
     public function loginInDev(User $user,Request $request)
     {
-        if (App::environment() !== 'local') {
-            abort('401', "You can't be here !");
-        }
-
         Auth::login($user);
         return redirect()->route('home');
 
