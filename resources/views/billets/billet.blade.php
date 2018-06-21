@@ -21,8 +21,8 @@
             display: block;
             margin: 0 auto;
 
-            width: 21cm;
-            height: 29.7cm;
+            width: 800px;
+            height: 566px;
         }
 
         page img {
@@ -36,19 +36,20 @@
             height: 80px;
             top: 1.2cm;
             left: 17cm;
-            
+
         }
         #name
         {
             position: absolute;
             width: 21cm;
             height: 24px;
-            top: 5cm;
+            top: 6cm;
+            left: 3cm;
             font-size: 35px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: {{ config('billeterie.billet.text_color') }};
+            color: #FFFFFF;
             font-weight: bold;
         }
 
@@ -57,12 +58,13 @@
             position: absolute;
             width: 21cm;
             height: 24px;
-            top: 6cm;
+            top: 7cm;
+            left: 3cm;
             font-size: 35px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: {{ config('billeterie.billet.text_color') }};
+            color: #FFFFFF;
             font-weight: bold;
         }
 
@@ -71,12 +73,13 @@
             position: absolute;
             width: 21cm;
             height: 24px;
-            top: 7cm;
+            top: 8cm;
+            left: 3cm;
             font-size: 35px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
             text-align: center;
-            color: {{ config('billeterie.billet.text_color') }};
+            color: #FFFFFF;
             font-weight: bold;
         }
 
@@ -84,28 +87,28 @@
         {
             position: absolute;
 
-            width: 130px;
-            height: 160px;
-            top: 4.51cm;
-            left: 16.45cm;
+            width: 100px;
+            height: 120px;
+            top: 1.65cm;
+            left: 17.1cm;
         }
 
         #code img
         {
             display: block;
-            height: 130px;
-            width: 130px;
+            height: 90px;
+            width: 90px;
         }
 
         #code #id
         {
             display: block;
             height: 10px;
-            width: 130px;
+            width: 100px;
             color: #000000;
             text-align: center;
             font-size: 15px;
-            margin-top: 126px;
+            margin-top: 0px;
             font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
         }
 
