@@ -131,7 +131,7 @@ class Price extends Model
 
     public function scopeNextToBeVisible($query)
     {
-        return $query->where('end_at', '>', Carbon::now()->toDateTimeString())->orderBy('start_at', 'desc');
+        return $query->where('end_at', '>', Carbon::now()->toDateTimeString())->orderBy('start_at', 'asc');
     }
 
 
