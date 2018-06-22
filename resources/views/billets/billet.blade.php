@@ -124,7 +124,7 @@
     </div>
     <div id="name">{{ strtoupper($billet->name) }}</div>
     <div id="surname">{{ ucfirst(strtolower($billet->surname)) }}</div>
-    <div id="type">{{ ucfirst(strtolower($billet->price->name)) }}</div>
+    <div id="type">{{ $billet->price->name }}</div>
 </div>
 </body>
 </html>
