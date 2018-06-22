@@ -123,7 +123,7 @@ class Billet extends Model
     {
         $billet = view('billets.billet', ['billet'=>$this])->render();
         $billet = preg_replace('/>\s+</', '><', $billet);
-        return PDF::loadHTML($billet)->setPaper('A4')->setWarnings(true);
+        return PDF::loadHTML($billet)->setPaper(array(0,0,595.28,421.37))->setWarnings(true);
     }
 
     public function sendToMail($update=false)
