@@ -61,6 +61,7 @@
                                     @endif
                                     @if(Auth::user()->isAdmin())
                                         <li><a href="{{ route('admin_orders_list') }}">Liste des commandes</a></li>
+                                        <li><a href="{{ route('admin_events_list') }}">Evenements</a></li>
                                         <li><a href="{{ route('admin_sell') }}">Stats</a></li>
                                          <li><a href="{{ route('admin_users_index') }}">Utilisateurs</a></li>
                                     @endif

@@ -122,6 +122,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::post('mail/template/edit/{mail_template}', 'MailTemplateController@edit');
 
     Route::get('mail/template/toogleActive/{mail_template}', 'MailTemplateController@toogleActivation')->name('toogle_mail_template');
+
+    Route::get('event', ['uses' => 'EventController@index'])->name('admin_events_list');
+    Route::get('event/create', ['uses' => 'EventController@create']);
+    Route::get('event/edit/{id}', ['uses' => 'EventController@edit']);
+    Route::post('event', ['uses' => 'EventController@store']);
+    Route::delete('event/{id}', ['uses' => 'EventController@destroy']);
+    Route::put('event/{id}', ['uses' => 'EventController@update']);
 });
 
 Route::group(['prefix' => 'etupay'], function () {
