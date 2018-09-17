@@ -8,13 +8,14 @@ use Request;
 use Response;
 use Validator;
 use Redirect;
+use Log;
 
 
 class EventController extends Controller
 {
     public function show()
     {
-        return response()->json(Event::all());
+      return Response::json(Event::all(), 200);
     }
 
     public function index()

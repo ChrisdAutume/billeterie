@@ -129,6 +129,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::post('event', ['uses' => 'EventController@store']);
     Route::delete('event/{id}', ['uses' => 'EventController@destroy']);
     Route::put('event/{id}', ['uses' => 'EventController@update']);
+
+    Route::get('partner', ['uses' => 'PartnerController@index'])->name('admin_partners_list');
+    Route::get('partner/create', ['uses' => 'PartnerController@create']);
+    Route::get('partner/edit/{id}', ['uses' => 'PartnerController@edit']);
+    Route::post('partner', ['uses' => 'PartnerController@store']);
+    Route::delete('partner/{id}', ['uses' => 'PartnerController@destroy']);
+    Route::put('partner/{id}', ['uses' => 'PartnerController@update']);
 });
 
 Route::group(['prefix' => 'etupay'], function () {

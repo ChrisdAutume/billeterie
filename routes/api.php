@@ -23,3 +23,4 @@ Route::get('/dons/status', 'DonController@apiGetAmount');
 Route::get('/billets/get', 'BilletController@apiGetBillet');
 
 Route::get('/events', 'EventController@show');
+Route::get('/partners', 'PartnerController@show');
