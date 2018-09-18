@@ -148,6 +148,26 @@ class GuichetController extends Controller
         ]);
     }
 
+    public function ApiGetExport(Request $request, $uuid)
+    {
+        $guichet = Guichet::where('uuid', $uuid)
+            ->where('start_at','<=',Carbon::now('Europe/Paris'))
+            ->where('end_at','>=',Carbon::now('Europe/Paris'))->first();
+
+        if(!$guichet || $guichet->type != 'validation')
+        {
+            return response()->json(['Token not authorized.'], 403);
+        }
+        $billets = Billet::with(['options','price'])->get();
+        $test = $billets->map(function(Billet $billet){
+            $b = $billet->toArray();
+            $b['qrcode'] = $billet->getQrCodeSecurity();
+            return $b;
+        });
+
+        return response()->json($billets);
+
+    }
     /**
      * Export a CSV of billets to validate
      */

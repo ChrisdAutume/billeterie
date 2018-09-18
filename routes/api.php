@@ -21,3 +21,4 @@ use Illuminate\Http\Request;
 Route::post('/etupay/callback', 'EtuPayController@etupayCallback');
 Route::get('/dons/status', 'DonController@apiGetAmount');
 Route::get('/billets/get', 'BilletController@apiGetBillet');
+Route::get('/guichet/{uuid}/billets', 'GuichetController@ApiGetExport');
