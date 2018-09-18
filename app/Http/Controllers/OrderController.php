@@ -188,6 +188,8 @@ class OrderController extends Controller
 
             if (isset($billet['price']['billets']))
                 unset($billet['price']['billets']);
+            if (isset($billet['price']['lists']))
+                unset($billet['price']['lists']);
             $request->session()->push('billets', [
                 'billet' => $billet,
                 'options' => $request->session()->get('options'),
