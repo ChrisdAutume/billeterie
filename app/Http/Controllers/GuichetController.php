@@ -159,13 +159,13 @@ class GuichetController extends Controller
             return response()->json(['Token not authorized.'], 403);
         }
         $billets = Billet::with(['options','price'])->get();
-        $test = $billets->map(function(Billet $billet){
+        $return = $billets->map(function(Billet $billet){
             $b = $billet->toArray();
             $b['qrcode'] = $billet->getQrCodeSecurity();
             return $b;
         });
 
-        return response()->json($billets);
+        return response()->json($return);
 
     }
     /**
