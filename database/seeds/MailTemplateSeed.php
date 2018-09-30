@@ -91,7 +91,8 @@ L'équipe organisatrice."
         foreach ($default as $line)
         {
             $i = \App\Models\MailTemplate::firstOrNew(['name'=> $line['name']]);
-            $i->update($line);
+            $i->title = $line['line'];
+            $i->content = $line['content'];
             $i->save();
         }
     }
