@@ -24,3 +24,4 @@ Route::get('/billets/get', 'BilletController@apiGetBillet');
 
 Route::get('/events', 'EventController@show');
 Route::get('/partners', 'PartnerController@show');
+Route::get('/guichet/{uuid}/billets', 'GuichetController@ApiGetExport');
