@@ -30,7 +30,7 @@ class SendOrderNotification
     public function handle(OrderUpdated $event)
     {
         // Check if state updated
-        if($event->order->isDirty('state'))
+        if($event->order->isDirty('state') && $event->order->name != 'expressOrder')
         {
             if($event->order->state == 'paid')
                 Mail::to($event->order->mail)->queue(new OrderValidated($event->order));

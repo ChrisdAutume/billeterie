@@ -126,6 +126,8 @@ class OrderController extends Controller
                 if($request->has('option_'.$price->id.'_'.$option->id) && $key_value > 0 && !$option->isMandatory)
                 {
                     if($key_value <= $option->available() && $key_value >= $option->min_choice && $key_value<= $option->max_choice) {
+                        if (isset($option['pivot']))
+                            unset($option['pivot']);
                         $opt_session[] = [
                             'option' => $option,
                             'qty' => $key_value
@@ -135,6 +137,8 @@ class OrderController extends Controller
                 } else if($option->isMandatory && ($option->min_choice <= $option->available()))
                 {
                     // Ajout automatique, si option obligatoire
+                    if (isset($option['pivot']))
+                        unset($option['pivot']);
                     $opt_session[] = [
                         'option' => $option,
                         'qty' => $option->min_choice
@@ -181,6 +185,11 @@ class OrderController extends Controller
 
         if ($price->canBeBuy($billet->mail)) {
             $billet->price_id = $price->id;
+
+            if (isset($billet['price']['billets']))
+                unset($billet['price']['billets']);
+            if (isset($billet['price']['lists']))
+                unset($billet['price']['lists']);
             $request->session()->push('billets', [
                 'billet' => $billet,
                 'options' => $request->session()->get('options'),

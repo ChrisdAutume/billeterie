@@ -24,7 +24,7 @@ class MailTemplateSeed extends Seeder
 
 Pensez à vous munir d'une pièce d'identité pour la soirée.
 
-Nous vous remercions et attendons avec impatience de vous voir le 9 Mars.
+Nous vous remercions et attendons avec impatience de vous voir.
 
 Cordialement,
 
@@ -56,7 +56,7 @@ L'équipe organisatrice"
 
 Pensez à vous munir d'une pièce d'identité pour la soirée.
 
-Nous vous remercions et attendons avec impatience de vous voir le 9 Mars.
+Nous vous remercions et attendons avec impatience de vous voir.
 
 Cordialement,
 
@@ -90,7 +90,9 @@ L'équipe organisatrice."
         ];
         foreach ($default as $line)
         {
-            DB::table('mail_templates')->insert($line);
+            $i = \App\Models\MailTemplate::firstOrNew(['name'=> $line['name']]);
+            $i->update($line);
+            $i->save();
         }
     }
 }

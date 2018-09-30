@@ -66,6 +66,10 @@ class PaiementController extends Controller
                     'price' => $billet->price->price,
                     'quantity'   => 1
                 ];
+                if (isset($billet->price->billets))
+                    unset($billet->price->billets);
+                if (isset($billet->price->lists))
+                    unset($billet->price->lists);
 
                 foreach ($options as $option)
                 {
@@ -74,6 +78,8 @@ class PaiementController extends Controller
                         'price' => $option['option']->price,
                         'quantity'   => $option['qty']
                     ];
+                    if (isset($option['option']['pivot']))
+                        unset($option['option']['pivot']);
                     $amount+= ($option['qty']*$option['option']->price);
                 }
                 $amount+=$billet->price->price;
