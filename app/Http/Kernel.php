@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\cors;
 use App\Http\Middleware\LandingMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -38,6 +39,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            cors::class,
         ],
     ];
 
