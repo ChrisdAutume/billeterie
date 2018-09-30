@@ -20,7 +20,7 @@
                     <input type="text" class="form-control" name="name" value="{{ $partner->name }}">
                 </div>
                 <div class="form-group">
-                    <label for="place">Lien</label>
+                    <label for="place">Lien (ne pas oublier le protocole http:// ou https:// si besoin)</label>
                     <input type="text" class="form-control" name="link" value="{{ $partner->link }}">
                 </div>
                 <div class="form-group">

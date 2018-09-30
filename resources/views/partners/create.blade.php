@@ -22,7 +22,7 @@
                     <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                 </div>
                 <div class="form-group">
-                    <label for="name">Lien</label>
+                    <label for="name">Lien (ne pas oublier le protocole http:// ou https:// si besoin)</label>
                     <textarea name="link" class="form-control">{{ old('link') }}</textarea>
                 </div>
                 <div class="form-group">
