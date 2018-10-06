@@ -16,6 +16,26 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    public function apiGetAvailablesPrices(Request $request)
+    {
+        if ($request->has('mail') && filter_var($request->input('mail'), FILTER_VALIDATE_EMAIL))
+        {
+            $mail = $request->input('mail');
+            $prices = Price::VisibleNow()->with(['options', 'fields'])->get();
+            $return = $prices->map(function(Price $price) use ($mail){
+                $b = collect($price)->only(['id', 'name', 'description', 'price', 'options'])->toArray();
+                $b['can_buy'] = $price->canBeBuy($mail);
+                return $b;
+            });
+
+
+            return response()->json([
+                'prices' => $return
+            ]);
+        } else
+            return response()->json([]);
+    }
+
     public function adminOrderEdit(Order $order, Request $request)
     {
         return view('orders.admin_edit', [
