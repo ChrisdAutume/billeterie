@@ -136,6 +136,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::post('partner', ['uses' => 'PartnerController@store']);
     Route::delete('partner/{id}', ['uses' => 'PartnerController@destroy']);
     Route::put('partner/{id}', ['uses' => 'PartnerController@update']);
+
+    Route::get('notifications', ['uses' => 'PushController@index'])->name('admin_push');
+    Route::post('notifications', ['uses' => 'PushController@store']);
 });
 
 Route::group(['prefix' => 'etupay'], function () {
