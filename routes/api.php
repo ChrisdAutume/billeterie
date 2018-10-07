@@ -28,4 +28,5 @@ Route::get('/guichet/{uuid}/billets', 'GuichetController@ApiGetExport');
 
 Route::group(['prefix' => 'order'], function () {
     Route::post('/get_prices', 'OrderController@apiGetAvailablesPrices');
+    Route::post('/create', 'OrderController@apiCreate');
 });

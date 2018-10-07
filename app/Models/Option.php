@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Option extends Model
 {
+
     protected $dates = [
         'start_at',
         'end_at',
@@ -35,6 +36,6 @@ class Option extends Model
             return $this->max_choice;
         }
 
-        return ($this->max_order - $this->billets->count());
+        return ($this->max_order - $this->billets()->count());
     }
 }
