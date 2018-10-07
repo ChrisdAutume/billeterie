@@ -9,9 +9,10 @@
 @endsection
 
 @section('content')
-    <div class="callout callout-info">
+    <div class="callout callout-danger">
         <h4>Vous n'avez pas accès au tarif qui vous correspond ?</h4>
-        <p>Envoyez un mail auprés de l'équipe organisatrice <a href="mailto:{{ config('billeterie.contact') }}">{{ config('billeterie.contact') }}</a> .</p>
+        <p>L'accès aux tarifs privilégiés est conditionné par l'utilisation de votre adresse d'établissement. En cas de problème, l'équipe organisatrice est joignable par mail: <a href="mailto:{{ config('billeterie.contact') }}">{{ config('billeterie.contact') }}</a> .</p>
+        <p>Les <b>réductions</b> sont appliquées <b>lors de l'ajout de l'achat dans le panier</b>.</p>
     </div>
 
     <div class="box box-default">
