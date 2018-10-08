@@ -27,6 +27,8 @@ Route::get('/partners', 'PartnerController@show');
 Route::get('/guichet/{uuid}/billets', 'GuichetController@ApiGetExport');
 
 Route::group(['prefix' => 'order'], function () {
-    Route::post('/get_prices', 'OrderController@apiGetAvailablesPrices');
-    Route::post('/create', 'OrderController@apiCreate');
+  Route::post('/get_prices', 'OrderController@apiGetAvailablesPrices');
+  Route::options('/get_prices', 'OrderController@apiGetAvailablesPrices');
+  Route::post('/create', 'OrderController@apiCreate');
+  Route::options('/create', 'OrderController@apiCreate');
 });
