@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    public function validateOPTIONS()
+    {
+      return response()->json("ok", 200);
+    }
     public function apiCreate(Request $request)
     {
         try {
