@@ -103,9 +103,17 @@ class OrderController extends Controller
                 }
                 $b->fields = $billet_fields;
 
+                if($order_fields)
+
 
                 $billet['billet'] = $b->toArray();
                 $billets[] = $billet;
+            }
+
+            if($request->has('don') && config("billeterie.don.enabled") && $request->input('don') >= config("billeterie.don.min"))
+            {
+                $billets['don'] = intval($request->input('don'));
+                $total += $billets['don'];
             }
 
             $order = new Order();
