@@ -91,7 +91,7 @@ class Order extends Model
                     ]);
                 }
                 $billet->sendToMail();
-            } elseif (isset($item['billet']))
+            } elseif (isset($item['don']))
             {
                 $don = new Don();
                 $don->amount = $item['don'];
@@ -149,7 +149,7 @@ class Order extends Model
             } elseif (isset($item['don']) || $item instanceof Don)
             {
                 $articles[] = [
-                    'name' => 'Don ce '.round(intval($item['don']/100),2).'€',
+                    'name' => 'Don de '.round(intval($item['don']/100),2).'€',
                     'price' => 0,
                     'quantity'   => 1
                 ];
