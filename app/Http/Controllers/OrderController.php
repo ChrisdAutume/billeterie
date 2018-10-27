@@ -92,7 +92,7 @@ class OrderController extends Controller
 
                 // Let's do options
                 $opts = $price->optionsSellable;
-                $order_opts = $item->get('options');
+                $order_opts = $item->get('options', []);
                 foreach ($opts as $opt)
                 {
                     if($opt->isMandatory && ($opt->min_choice <= $opt->available()))
@@ -104,7 +104,7 @@ class OrderController extends Controller
                         $total += $opt->price * $opt->min_choice;
                     } else {
                         $k = array_search($opt->id, array_column($order_opts, 'id'));
-                        if(isset($k))
+                        if($k)
                         {
                             $qty = $order_opts[$k]['qty'];
 
@@ -122,12 +122,12 @@ class OrderController extends Controller
 
                 //Let's add fields
                 $fields = $price->fields;
-                $order_fields = $item->get('options');
+                $order_fields = $item->get('fields', []);
                 $billet_fields = [];
                 foreach ($fields as $field)
                 {
                     $k = array_search($field->id, array_column($order_fields, 'id'));
-                    if(isset($k))
+                    if($k)
                     {
                         $data = $order_fields[$k]['value'];
                         $billet_fields[$field->name] = $data;
@@ -135,9 +135,6 @@ class OrderController extends Controller
                         throw new \Exception($field->name." field is empty.");
                 }
                 $b->fields = $billet_fields;
-
-                if($order_fields)
-
 
                 $billet['billet'] = $b->toArray();
                 $billets[] = $billet;

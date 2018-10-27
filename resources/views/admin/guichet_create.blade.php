@@ -97,7 +97,7 @@
                             @foreach($guichet->billets->groupBy('price_id') as $price_id=>$billets)
                                 <li>{{ $billets->first()->price->name }} ({{$billets->first()->price->price/100}}€): {{ $billets->count() }}</li>
                             @endforeach
-
+                            </ul>
                         </td>
                         <td><a href="{{ url()->route('get_sell_guichet', ['uuid'=>$guichet->uuid]) }}">{{ url()->route('get_sell_guichet', ['uuid'=>$guichet->uuid]) }}</a></td>
                     </tr>

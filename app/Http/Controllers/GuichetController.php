@@ -148,7 +148,7 @@ class GuichetController extends Controller
         ]);
     }
 
-    public function ApiGetExport(Request $request, $uuid)
+    public function apiGetExport(Request $request, $uuid)
     {
         $guichet = Guichet::where('uuid', $uuid)
             ->where('start_at','<=',Carbon::now('Europe/Paris'))
