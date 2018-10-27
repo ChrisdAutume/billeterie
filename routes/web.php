@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@homeAction')->name('home');
+Route::get('/order/{statut?}', 'HomeController@homeAction')->name('statut_page');
 Route::get('/home', 'HomeController@homeAction');
 
 Route::get('/landing', function () {
@@ -23,7 +24,8 @@ Route::get('/file/{file}', 'FileController@display')->name('view_file');
 Route::get('/download/{securite}/{billet}.pdf', 'BilletController@download')->name('download_billet');
 
 #Dev
-Route::get('/dev/login/is2Choo7caijieguogied6heaThaibana1ahrohzohg0aiVieciePh9icaSuo4ei/{user}', 'UserController@loginInDev')->name('admin_dev_login');
+if(env('APP_DEBUG'))
+    Route::get('/dev/login/{user}', 'UserController@loginInDev')->name('admin_dev_login');
 
 
 // GUICHET
