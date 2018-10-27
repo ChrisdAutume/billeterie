@@ -3,14 +3,9 @@
 namespace App\Models;
 
 use App\Events\OrderUpdated;
-use App\Mail\BilletEmited;
-use App\Mail\DonReceived;
-use App\Mail\OrderRefused;
-use App\Mail\OrderValidated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Mail;
 
 class Order extends Model
 {
@@ -68,7 +63,7 @@ class Order extends Model
             {
                 $item->order_id = $this->id;
                 $item->save();
-            } else {
+            } elseif(in_array('billet', $item)) {
                 $billet = $item['billet'];
                 if(is_array($billet))
                 {
@@ -96,6 +91,13 @@ class Order extends Model
                     ]);
                 }
                 $billet->sendToMail();
+            } elseif (in_array('don', $item))
+            {
+                $don = new Don();
+                $don->amount = $item['don'];
+                $don->order_id = $this->id;
+                $don->save();
+
             }
         }
 
@@ -135,14 +137,24 @@ class Order extends Model
 
         foreach ($order as $item)
         {
-            if (!is_array($item['billet']))
-                $item['billet'] = ($item['billet'])->toArray();
+            if(in_array('billet', $item))
+            {
+                if (!is_array($item['billet']))
+                    $item['billet'] = ($item['billet'])->toArray();
 
-            $articles[] = [
-                'name' => $item['billet']['name'],
-                'price' => 0,
-                'quantity'   => 1
-            ];
+                $articles[] = [
+                    'name' => $item['billet']['name'],
+                    'price' => 0,
+                    'quantity'   => 1
+                ];
+            } elseif (in_array('don', $item) || $item instanceof Don)
+            {
+                $articles[] = [
+                    'name' => 'Don',
+                    'price' => $item['don'],
+                    'quantity'   => 1
+                ];
+            }
         }
 
         $articles[] = [

@@ -32,7 +32,7 @@ class PaiementController extends Controller
             $caddie[] = $don;
 
             $articles[] = [
-                'name' => 'Don de promo',
+                'name' => 'Don',
                 'price' => intval($request->input('don'))*100,
                 'quantity'   => 1
             ];
