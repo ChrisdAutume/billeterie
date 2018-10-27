@@ -63,7 +63,7 @@ class Order extends Model
             {
                 $item->order_id = $this->id;
                 $item->save();
-            } elseif(in_array('billet', $item)) {
+            } elseif(isset($item['billet'])) {
                 $billet = $item['billet'];
                 if(is_array($billet))
                 {
@@ -91,7 +91,7 @@ class Order extends Model
                     ]);
                 }
                 $billet->sendToMail();
-            } elseif (in_array('don', $item))
+            } elseif (isset($item['billet']))
             {
                 $don = new Don();
                 $don->amount = $item['don'];
@@ -134,10 +134,9 @@ class Order extends Model
 
         $articles = [];
         $order = unserialize($this->data);
-
         foreach ($order as $item)
         {
-            if(in_array('billet', $item))
+            if(isset($item['billet']))
             {
                 if (!is_array($item['billet']))
                     $item['billet'] = ($item['billet'])->toArray();
@@ -147,22 +146,22 @@ class Order extends Model
                     'price' => 0,
                     'quantity'   => 1
                 ];
-            } elseif (in_array('don', $item) || $item instanceof Don)
+            } elseif (isset($item['don']) || $item instanceof Don)
             {
                 $articles[] = [
-                    'name' => 'Don',
-                    'price' => $item['don'],
+                    'name' => 'Don ce '.round(intval($item['don']/100),2).'€',
+                    'price' => 0,
                     'quantity'   => 1
                 ];
             }
         }
 
-        $articles[] = [
+        array_unshift($articles, [
             'name' => 'Commande #'.$this->id,
             'price' => $this->price,
             'quantity'   => 1
-        ];
-
+        ]);
+        dd($articles);
         $crypt = new Encrypter(base64_decode(Config::get('services.etupay.api_key')), 'AES-256-CBC');
         $payload =  $crypt->encrypt(json_encode([
             'type' => 'checkout',

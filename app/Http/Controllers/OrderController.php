@@ -114,12 +114,11 @@ class OrderController extends Controller
                 $billets[] = $billet;
             }
 
-            if($request->has('don') && config("billeterie.don.enabled") && $request->input('don') >= (config("billeterie.don.min")/100))
+            if($request->has('don') && config("billeterie.don.enabled") && $request->input('don') >= config("billeterie.don.min"))
             {
-                $billets['don'] = intval($request->input('don'));
-                $total += $billets['don'];
+                $billets[] = ['don'=> intval($request->input('don'))];
+                $total += intval($request->input('don'));
             }
-
             $order = new Order();
             $order->name = $request->input('buyer.name');
             $order->surname = $request->input('buyer.surname');
