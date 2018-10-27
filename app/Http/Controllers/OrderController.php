@@ -104,7 +104,7 @@ class OrderController extends Controller
                         $total += $opt->price * $opt->min_choice;
                     } else {
                         $k = array_search($opt->id, array_column($order_opts, 'id'));
-                        if($k)
+                        if(is_int($k))
                         {
                             $qty = $order_opts[$k]['qty'];
 
@@ -119,7 +119,6 @@ class OrderController extends Controller
                         }
                     }
                 }
-
                 //Let's add fields
                 $fields = $price->fields;
                 $order_fields = $item->get('fields', []);
@@ -127,7 +126,7 @@ class OrderController extends Controller
                 foreach ($fields as $field)
                 {
                     $k = array_search($field->id, array_column($order_fields, 'id'));
-                    if($k)
+                    if(is_int($k))
                     {
                         $data = $order_fields[$k]['value'];
                         $billet_fields[$field->name] = $data;

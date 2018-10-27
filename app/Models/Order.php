@@ -133,28 +133,6 @@ class Order extends Model
             throw new \Exception("Order already paid or canceled");
 
         $articles = [];
-        $order = unserialize($this->data);
-        foreach ($order as $item)
-        {
-            if(isset($item['billet']))
-            {
-                if (!is_array($item['billet']))
-                    $item['billet'] = ($item['billet'])->toArray();
-
-                $articles[] = [
-                    'name' => $item['billet']['name'],
-                    'price' => 0,
-                    'quantity'   => 1
-                ];
-            } elseif (isset($item['don']) || $item instanceof Don)
-            {
-                $articles[] = [
-                    'name' => 'Don de '.round(intval($item['don']/100),2).'€',
-                    'price' => 0,
-                    'quantity'   => 1
-                ];
-            }
-        }
 
         array_unshift($articles, [
             'name' => 'Commande #'.$this->id,
