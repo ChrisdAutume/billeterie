@@ -21,6 +21,35 @@ class OrderController extends Controller
     {
       return response()->json("ok", 200);
     }
+    public function apiGetOrder(Request $request)
+    {
+        try {
+            if (!($request->has(['order_id', 'mail']))) {
+                throw  new \Exception("order_id and mail have to be specified");
+           }
+
+            $order = Order::where(['id' => intval($request->get('order_id')), 'mail'=> $request->get('mail')])->with(['billets', 'dons'])->first();
+            if(!$order)
+                throw  new \Exception("Order can't be find");
+            $rtn = [];
+            $rtn['order'] = array_only($order->toArray(), ['name', 'surname', 'mail', 'id', 'state']);
+            $rtn['billets'] = $order->billets = $order->billets->map(function(Billet $billet){
+                $b = array_only($billet->toArray(), ['name', 'surname']);
+                $b['qrcode'] = $billet->getQrCodeSecurity();
+                return $b;
+            });
+
+            return response()->json($rtn);
+
+
+
+        } catch (\Exception $e)
+        {
+            return response()->json([
+                "error" => $e->getMessage()
+            ],400);
+        }
+    }
     public function apiCreate(Request $request)
     {
         try {

@@ -31,4 +31,5 @@ Route::group(['prefix' => 'order'], function () {
   Route::options('/get_prices', 'OrderController@apiGetAvailablesPrices');
   Route::post('/create', 'OrderController@apiCreate');
   Route::options('/create', 'OrderController@validateOPTIONS');
+  Route::get('/get', 'OrderController@apiGetOrder');
 });
