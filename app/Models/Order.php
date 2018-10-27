@@ -161,7 +161,7 @@ class Order extends Model
             'price' => $this->price,
             'quantity'   => 1
         ]);
-        dd($articles);
+
         $crypt = new Encrypter(base64_decode(Config::get('services.etupay.api_key')), 'AES-256-CBC');
         $payload =  $crypt->encrypt(json_encode([
             'type' => 'checkout',
