@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\BilletEmited;
 use App\Mail\OrderValidated;
 use App\Models\Billet;
+use App\Models\Option;
 use App\Models\Order;
 use App\Models\Price;
 use Carbon\Carbon;
@@ -16,6 +17,173 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    public function validateOPTIONS()
+    {
+      return response()->json("ok", 200);
+    }
+    public function apiGetOrder(Request $request)
+    {
+        try {
+            if (!($request->has(['order_id', 'mail']))) {
+                throw  new \Exception("order_id and mail have to be specified");
+           }
+
+            $order = Order::where(['id' => intval($request->get('order_id')), 'mail'=> $request->get('mail')])->with(['billets', 'dons'])->first();
+            if(!$order)
+                throw  new \Exception("Order can't be find");
+            $rtn = [];
+            $rtn['order'] = array_only($order->toArray(), ['name', 'surname', 'mail', 'id', 'state']);
+            $rtn['billets'] = $order->billets = $order->billets->map(function(Billet $billet){
+                $b = array_only($billet->toArray(), ['name', 'surname']);
+                $b['qrcode'] = $billet->getQrCodeSecurity();
+                return $b;
+            });
+
+            return response()->json($rtn);
+
+
+
+        } catch (\Exception $e)
+        {
+            return response()->json([
+                "error" => $e->getMessage()
+            ],400);
+        }
+    }
+    public function apiCreate(Request $request)
+    {
+        try {
+            if (!($request->has(['buyer.name', 'buyer.surname']) && filter_var($request->input('buyer.mail'), FILTER_VALIDATE_EMAIL))) {
+                return response()->json(['error' => 'Buyer information are not correct'], 400);
+            }
+
+            $billets = [];
+            $total = 0;
+            $items = $request->input('items');
+
+            if (count($items) == 0)
+                throw new \Exception("No items found");
+
+            foreach ($items as $item)
+            {
+                $billet = [
+                    'billet' => null,
+                    'options' => [
+                        //['option'=> Object, 'qyt'=> 0 ]
+                    ]
+                ];
+                $item = collect($item);
+                if (!($item->has('name') && $item->has('surname') && filter_var($item->get('mail'), FILTER_VALIDATE_EMAIL) && $item->has('price_id')))
+                    throw new \Exception("Item incomplete");
+
+                $price = Price::find($item->get('price_id'));
+                if(!$price || !$price->canBeBuy($item->get('mail')))
+                    throw new \Exception("The price can't be bought.");
+
+                $b = new Billet([
+                    'name' => $item->get('name'),
+                    'surname' => $item->get('surname'),
+                    'mail' => $item->get('mail'),
+                    'price_id' => $price->id
+                ]);
+                $total += $price->price;
+
+
+
+                // Let's do options
+                $opts = $price->optionsSellable;
+                $order_opts = $item->get('options', []);
+                foreach ($opts as $opt)
+                {
+                    if($opt->isMandatory && ($opt->min_choice <= $opt->available()))
+                    {
+                        $billet['options'][] = [
+                            'option' => $opt->toArray(),
+                            'qty'   => $opt->min_choice
+                        ];
+                        $total += $opt->price * $opt->min_choice;
+                    } else {
+                        $k = array_search($opt->id, array_column($order_opts, 'id'));
+                        if(is_int($k))
+                        {
+                            $qty = $order_opts[$k]['qty'];
+
+                            if ($qty <= $opt->available() && $qty >= $opt->min_choice && $qty<= $opt->max_choice)
+                            {
+                                $billet['options'][] = [
+                                    'option' => $opt->toArray(),
+                                    'qty'   => $qty
+                                ];
+                                $total += $opt->price * $qty;
+                            }
+                        }
+                    }
+                }
+                //Let's add fields
+                $fields = $price->fields;
+                $order_fields = $item->get('fields', []);
+                $billet_fields = [];
+                foreach ($fields as $field)
+                {
+                    $k = array_search($field->id, array_column($order_fields, 'id'));
+                    if(is_int($k))
+                    {
+                        $data = $order_fields[$k]['value'];
+                        $billet_fields[$field->name] = $data;
+                    } else if($k->mandatory)
+                        throw new \Exception($field->name." field is empty.");
+                }
+                $b->fields = $billet_fields;
+
+                $billet['billet'] = $b->toArray();
+                $billets[] = $billet;
+            }
+
+            if($request->has('don') && config("billeterie.don.enabled") && $request->input('don') >= config("billeterie.don.min"))
+            {
+                $billets[] = ['don'=> intval($request->input('don'))];
+                $total += intval($request->input('don'));
+            }
+            $order = new Order();
+            $order->name = $request->input('buyer.name');
+            $order->surname = $request->input('buyer.surname');
+            $order->mail = $request->input('buyer.mail');
+            $order->data = serialize($billets);
+            $order->price = $total;
+            $order->save();
+
+            return response()->json([
+                'order_id'  => $order->id,
+                'amount'    => $order->price,
+                'paiment_url'   => $order->getEtuPayUrl()
+            ]);
+        } catch (\Exception $e)
+        {
+            return response()->json([
+                "error" => $e->getMessage()
+            ],400);
+        }
+    }
+    public function apiGetAvailablesPrices(Request $request)
+    {
+        if ($request->has('mail') && filter_var($request->input('mail'), FILTER_VALIDATE_EMAIL))
+        {
+            $mail = $request->input('mail');
+            $prices = Price::VisibleNow()->with(['options', 'fields'])->get();
+            $return = $prices->map(function(Price $price) use ($mail){
+                $b = collect($price)->only(['id', 'name', 'description', 'price', 'options'])->toArray();
+                $b['can_buy'] = $price->canBeBuy($mail);
+                return $b;
+            });
+
+
+            return response()->json([
+                'prices' => $return
+            ]);
+        } else
+            return response()->json([]);
+    }
+
     public function adminOrderEdit(Order $order, Request $request)
     {
         return view('orders.admin_edit', [

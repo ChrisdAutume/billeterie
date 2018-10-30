@@ -24,12 +24,15 @@ class EtuPayController extends Controller
                 $request->session()->flash('success', "Le paiment a bien été accepté, vous recevrez prochainement une confirmation via mail.");
                 $order = Order::find($callback->service_data);
                 $request->session()->flash('order_validated', $order);
+                return redirect()->route('statut_page', ['statut' => 'success']);
                 break;
             case 'REFUSED':
                 $request->session()->flash('error', "Votre commande a été annulé suite au refus de votre banque !");
+                return redirect()->route('statut_page', ['statut' => 'refused']);
                 break;
             case 'CANCELED':
-            $request->session()->flash('warning', "Votre commande a été annulé !");
+                $request->session()->flash('warning', "Votre commande a été annulé !");
+                return redirect()->route('statut_page', ['statut' => 'canceled']);
                 break;
         }
 

@@ -21,4 +21,15 @@ use Illuminate\Http\Request;
 Route::post('/etupay/callback', 'EtuPayController@etupayCallback');
 Route::get('/dons/status', 'DonController@apiGetAmount');
 Route::get('/billets/get', 'BilletController@apiGetBillet');
-Route::get('/guichet/{uuid}/billets', 'GuichetController@ApiGetExport');
+
+Route::get('/events', 'EventController@show');
+Route::get('/partners', 'PartnerController@show');
+Route::get('/guichet/{uuid}/billets', 'GuichetController@apiGetExport');
+
+Route::group(['prefix' => 'order'], function () {
+  Route::post('/get_prices', 'OrderController@apiGetAvailablesPrices');
+  Route::options('/get_prices', 'OrderController@apiGetAvailablesPrices');
+  Route::post('/create', 'OrderController@apiCreate');
+  Route::options('/create', 'OrderController@validateOPTIONS');
+  Route::get('/get', 'OrderController@apiGetOrder');
+});

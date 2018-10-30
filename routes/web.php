@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@homeAction')->name('home');
+Route::get('/order/{statut?}', 'HomeController@homeAction')->name('statut_page');
 Route::get('/home', 'HomeController@homeAction');
 
 Route::get('/landing', function () {
@@ -23,7 +24,8 @@ Route::get('/file/{file}', 'FileController@display')->name('view_file');
 Route::get('/download/{securite}/{billet}.pdf', 'BilletController@download')->name('download_billet');
 
 #Dev
-Route::get('/dev/login/is2Choo7caijieguogied6heaThaibana1ahrohzohg0aiVieciePh9icaSuo4ei/{user}', 'UserController@loginInDev')->name('admin_dev_login');
+if(env('APP_DEBUG'))
+    Route::get('/dev/login/{user}', 'UserController@loginInDev')->name('admin_dev_login');
 
 
 // GUICHET
@@ -122,6 +124,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
     Route::post('mail/template/edit/{mail_template}', 'MailTemplateController@edit');
 
     Route::get('mail/template/toogleActive/{mail_template}', 'MailTemplateController@toogleActivation')->name('toogle_mail_template');
+
+    Route::get('event', ['uses' => 'EventController@index'])->name('admin_events_list');
+    Route::get('event/create', ['uses' => 'EventController@create']);
+    Route::get('event/edit/{id}', ['uses' => 'EventController@edit']);
+    Route::post('event', ['uses' => 'EventController@store']);
+    Route::delete('event/{id}', ['uses' => 'EventController@destroy']);
+    Route::put('event/{id}', ['uses' => 'EventController@update']);
+
+    Route::get('partner', ['uses' => 'PartnerController@index'])->name('admin_partners_list');
+    Route::get('partner/create', ['uses' => 'PartnerController@create']);
+    Route::get('partner/edit/{id}', ['uses' => 'PartnerController@edit']);
+    Route::post('partner', ['uses' => 'PartnerController@store']);
+    Route::delete('partner/{id}', ['uses' => 'PartnerController@destroy']);
+    Route::put('partner/{id}', ['uses' => 'PartnerController@update']);
+
+    Route::get('notifications', ['uses' => 'PushController@index'])->name('admin_push');
+    Route::post('notifications', ['uses' => 'PushController@store']);
 });
 
 Route::group(['prefix' => 'etupay'], function () {

@@ -33,7 +33,7 @@ class GuichetController extends Controller
     {
         Auth::user()->requireLevel(10);
 
-        if(empty($request->input('name')) || empty($request->input('mail')) || empty($request->input('start_at')) || empty($request->input('end_at')) || empty($request->input('acl')))
+        if(empty($request->input('name')) || empty($request->input('mail')) || empty($request->input('start_at')) || empty($request->input('end_at')))
         {
             $request->session()->flash('error', "L'ensemble des champs n'est pas remplit.");
             return redirect()->back();
@@ -44,10 +44,11 @@ class GuichetController extends Controller
         $guichet->mail = $request->input('mail');
         $guichet->start_at = Carbon::createFromFormat('d/m/Y H:i', $request->input('start_at'));
         $guichet->end_at = Carbon::createFromFormat('d/m/Y H:i', $request->input('end_at'));
+        $guichet->type = $request->input('type', 'sell');
         $guichet->acl = $request->input('acl');
         $guichet->save();
 
-        if(!is_null($guichet->mail))
+        if(!is_null($guichet->mail) && $guichet->type == 'sell')
         {
             Mail::to($guichet->mail)
                 ->cc(config('billeterie.contact'))
@@ -148,7 +149,7 @@ class GuichetController extends Controller
         ]);
     }
 
-    public function ApiGetExport(Request $request, $uuid)
+    public function apiGetExport(Request $request, $uuid)
     {
         $guichet = Guichet::where('uuid', $uuid)
             ->where('start_at','<=',Carbon::now('Europe/Paris'))

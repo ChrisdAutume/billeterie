@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use App\Events\OrderUpdated;
-use App\Mail\BilletEmited;
-use App\Mail\DonReceived;
-use App\Mail\OrderRefused;
-use App\Mail\OrderValidated;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Support\Facades\Config;
 
 class Order extends Model
 {
@@ -40,6 +37,12 @@ class Order extends Model
         'price',
         ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->attributes['state'] = 'ordering';
+    }
+
     public function validate()
     {
         if(!isset($this->data))
@@ -60,20 +63,41 @@ class Order extends Model
             {
                 $item->order_id = $this->id;
                 $item->save();
-            } else {
+            } elseif(isset($item['billet'])) {
                 $billet = $item['billet'];
+                if(is_array($billet))
+                {
+                    $b = new Billet();
+                    $b->forceFill($item['billet']);
+                    $billet = $b;
+                }
                 $options = $item['options'];
-
                 $billet->order_id = $this->id;
                 $billet->save();
 
                 foreach ($options as $opt) {
+                    if(is_array($opt['option']))
+                    {
+                        $instance = new Option();
+                        $instance->forceFill($opt['option']);
+                        unset($instance->pivot); //TODO: A faire moins moche
+                        $instance->exists = true;
+                        $opt['option'] = $instance;
+                    }
+
                     $billet->options()->save($opt['option'], [
                         'qty' => $opt['qty'],
                         'amount' => $opt['qty'] * $opt['option']->price
                     ]);
                 }
                 $billet->sendToMail();
+            } elseif (isset($item['don']))
+            {
+                $don = new Don();
+                $don->amount = $item['don'];
+                $don->order_id = $this->id;
+                $don->save();
+
             }
         }
 
@@ -101,5 +125,34 @@ class Order extends Model
     public function dons()
     {
         return $this->hasMany(Don::class);
+    }
+
+    public function getEtuPayUrl()
+    {
+        if($this->state != "ordering")
+            throw new \Exception("Order already paid or canceled");
+
+        $articles = [];
+
+        array_unshift($articles, [
+            'name' => 'Commande #'.$this->id,
+            'price' => $this->price,
+            'quantity'   => 1
+        ]);
+
+        $crypt = new Encrypter(base64_decode(Config::get('services.etupay.api_key')), 'AES-256-CBC');
+        $payload =  $crypt->encrypt(json_encode([
+            'type' => 'checkout',
+            'amount'=> $this->price,
+            'client_mail' => $this->mail,
+            'firstname' => $this->name,
+            'lastname' => $this->surname,
+            'description' => 'Commande sur la billetterie - '.config('billeterie.event.name'),
+            'articles' => $articles,
+            'service_data' => $this->id,
+        ]));
+
+        return Config::get('services.etupay.endpoint').'&payload='.$payload;
+
     }
 }

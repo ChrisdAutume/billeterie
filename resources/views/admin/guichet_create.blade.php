@@ -31,6 +31,15 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="type" class="col-lg-2 text-right">Type de guichet</label>
+                    <div class="col-lg-10">
+                        <select class="form-control" id="type" name="type">
+                            <option value="sell">Guichet de vente</option>
+                            <option value="validation">Guichet de validation & API</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="liste" class="col-lg-2 text-right">Billets autorisé</label>
                     <div class="col-lg-10">
                         <select class="form-control" id="acl" multiple="multiple" name="acl[]">
@@ -97,9 +106,9 @@
                             @foreach($guichet->billets->groupBy('price_id') as $price_id=>$billets)
                                 <li>{{ $billets->first()->price->name }} ({{$billets->first()->price->price/100}}€): {{ $billets->count() }}</li>
                             @endforeach
-
+                            </ul>
                         </td>
-                        <td><a href="{{ url()->route('get_sell_guichet', ['uuid'=>$guichet->uuid]) }}">{{ url()->route('get_sell_guichet', ['uuid'=>$guichet->uuid]) }}</a></td>
+                        <td>@if($guichet->type == 'sell') <a href="{{ url()->route('get_sell_guichet', ['uuid'=>$guichet->uuid]) }}">{{ url()->route('get_sell_guichet', ['uuid'=>$guichet->uuid]) }}</a>@else Token API: {{ $guichet->uuid }} @endif</td>
                     </tr>
                 @empty
 

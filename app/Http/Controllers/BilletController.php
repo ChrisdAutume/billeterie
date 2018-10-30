@@ -56,13 +56,18 @@ class BilletController extends Controller
         $options = [];
         foreach ($billet->options as $opt)
         {
-            $options[] = $opt->name;
+            $options[] = [
+                'id' => $opt->id,
+                'name' => $opt->name,
+                'qty' => $opt->pivot->qty,
+                ];
         }
         return response()->json([
             'data' => [
                 'qrcode' => $billet->getQrCodeSecurity(),
                 'name'  => $billet->name,
                 'surname' => $billet->surname,
+                'mail' => $billet->mail,
                 'price' => $billet->price->name,
                 'options' => $options,
                 'created_at' => $billet->created_at
