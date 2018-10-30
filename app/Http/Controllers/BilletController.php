@@ -67,6 +67,7 @@ class BilletController extends Controller
                 'qrcode' => $billet->getQrCodeSecurity(),
                 'name'  => $billet->name,
                 'surname' => $billet->surname,
+                'mail' => $billet->mail,
                 'price' => $billet->price->name,
                 'options' => $options,
                 'created_at' => $billet->created_at
