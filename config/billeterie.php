@@ -3,9 +3,9 @@
 return [
     'don' => [
         'enabled' => env('DON_ENABLED', false),
-        'name' => 'Don de promo',
-        'text' => "Cette année pour le don de promo 2018, contribuez à l'amélioration de la vie à l'UTT en participant !",
-        'min'  =>   1000,
+        'name' => env('DON_TITLE', 'Don de promo'),
+        'text' => env('DON_CAPTION', 'Cette année pour le don de promo, contribuez à l\'amélioration de la vie à l\'UTT en participant !'),
+        'min'  => env('DON_MIN_AMOUNT', 1000)
     ],
     'billet' =>[
     'text_color' => env('BILLET_TEXT_COLOR', '#000000')
