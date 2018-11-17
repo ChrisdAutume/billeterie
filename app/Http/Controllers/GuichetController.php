@@ -6,6 +6,7 @@ use App\Mail\GuichetCreated;
 use App\Models\Billet;
 use App\Models\Guichet;
 use Carbon\Carbon;
+use Monolog\Logger;
 use Torann\Hashids\Facade as Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,33 @@ class GuichetController extends Controller
         return view('guichet.home');
     }
 
+    /**
+     * API bulk validation
+     */
+    public function apiPostValidation(Request $request)
+    {
+        if(Auth::user()->type != 'validation')
+        {
+            return response()->json(['error' => 'This api can\'t be used.'], 401);
+        }
+        $datas = $request->input();
+
+        foreach($datas as $data)
+        {
+            $billet = Billet::find($data['id']);
+            if($billet)
+            {
+                if($billet->validated_at)
+                {
+                    Log::info("Billet ".$billet->id." déja validé !");
+                } else {
+                    $billet->validated_at = (new \DateTime())->setTimestamp($data['validated_at']);
+                    $billet->save();
+                }
+            }
+        }
+        return response()->json([]);
+    }
     /**
      * Js bulk validation for gichet
      * expect a json object with `id => datetime` inside
@@ -149,17 +177,19 @@ class GuichetController extends Controller
         ]);
     }
 
-    public function apiGetExport(Request $request, $uuid)
+    public function apiGetExport(Request $request)
     {
-        $guichet = Guichet::where('uuid', $uuid)
-            ->where('start_at','<=',Carbon::now('Europe/Paris'))
-            ->where('end_at','>=',Carbon::now('Europe/Paris'))->first();
+        $guichet = Auth::user();
 
         if(!$guichet || $guichet->type != 'validation')
         {
             return response()->json(['Token not authorized.'], 403);
         }
-        $billets = Billet::with(['options','price'])->get();
+        if($request->has('updated_at'))
+            $billets = Billet::with(['options','price'])->where('updated_at', '>=', $request->get('updated_at'))->get();
+        else
+            $billets = Billet::with(['options','price'])->get();
+
         $return = $billets->map(function(Billet $billet){
             $b = $billet->toArray();
             $b['qrcode'] = $billet->getQrCodeSecurity();

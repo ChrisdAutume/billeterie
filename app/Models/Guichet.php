@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Events\GuichetCreated;
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid as RamseyUuid;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Guichet extends Model
+class Guichet extends Authenticatable
 {
     protected $dates = [
         'created_at',

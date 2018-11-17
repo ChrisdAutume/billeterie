@@ -13,10 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-/*Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
-*/
+Route::group(['prefix' => 'guichet', 'middleware' => 'auth:api'], function () {
+    Route::get('/', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('/billets', 'GuichetController@apiGetExport');
+    Route::post('/validation', 'GuichetController@apiPostValidation');
+});
+
+Route::options('/{path?}', function (Request $request) {
+    return '';
+})->where("path", ".+");
+
+
 
 Route::post('/etupay/callback', 'EtuPayController@etupayCallback');
 Route::get('/dons/status', 'DonController@apiGetAmount');
@@ -24,7 +34,6 @@ Route::get('/billets/get', 'BilletController@apiGetBillet');
 
 Route::get('/events', 'EventController@show');
 Route::get('/partners', 'PartnerController@show');
-Route::get('/guichet/{uuid}/billets', 'GuichetController@apiGetExport');
 
 Route::group(['prefix' => 'order'], function () {
   Route::post('/get_prices', 'OrderController@apiGetAvailablesPrices');
