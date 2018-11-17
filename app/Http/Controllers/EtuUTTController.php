@@ -16,6 +16,10 @@ class EtuUTTController extends Controller
      */
     public function login(Request $request=null)
     {
+        if($request->getContentType() == 'application/json')
+        {
+            return response()->json(['error' => 'Wrong API access'], 401);
+        }
         return redirect()->to(Config::get('services.etuutt.baseuri.public').'/api/oauth/authorize?client_id=' . Config::get('services.etuutt.client.id') . '&scopes=private_user_account&response_type=code&state=xyz');
     }
 
@@ -85,7 +89,7 @@ class EtuUTTController extends Controller
         }
 
         Auth::login($user);
-        return redirect()->route('home');
+        return redirect()->intended();
 
     }
 
