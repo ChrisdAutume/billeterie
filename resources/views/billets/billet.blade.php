@@ -44,7 +44,9 @@
             width: 21cm;
             height: 24px;
             top: 6cm;
-            left: 3cm;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
             font-size: 35px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -59,7 +61,9 @@
             width: 21cm;
             height: 24px;
             top: 7cm;
-            left: 3cm;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
             font-size: 35px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -74,7 +78,9 @@
             width: 21cm;
             height: 24px;
             top: 8cm;
-            left: 3cm;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
             font-size: 35px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
