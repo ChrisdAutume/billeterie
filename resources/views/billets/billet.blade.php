@@ -41,51 +41,54 @@
         #name
         {
             position: absolute;
-            width: 21cm;
+            width: 12cm;
             height: 24px;
-            top: 6cm;
+            top: 10cm;
+            left: 9cm;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            font-size: 35px;
+            font-size: 30px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
-            text-align: center;
-            color: #FFFFFF;
+            text-align: left;
+            color: #000000;
             font-weight: bold;
         }
 
         #surname
         {
             position: absolute;
-            width: 21cm;
+            width: 12cm;
             height: 24px;
-            top: 7cm;
+            top: 11cm;
+            left: 9cm;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            font-size: 35px;
+            font-size: 30px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
-            text-align: center;
-            color: #FFFFFF;
+            text-align: left;
+            color: #000000;
             font-weight: bold;
         }
 
         #type
         {
             position: absolute;
-            width: 21cm;
+            width: 12cm;
             height: 24px;
-            top: 8cm;
+            top: 12cm;
+            left: 9cm;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            font-size: 35px;
+            font-size: 30px;
 
             font-family: "Agency FB",Arial, "Helvetica Neue", Helvetica, sans-serif;
-            text-align: center;
-            color: #FFFFFF;
+            text-align: left;
+            color: #000000;
             font-weight: bold;
         }
 
@@ -96,7 +99,7 @@
             width: 100px;
             height: 120px;
             top: 1.65cm;
-            left: 17.1cm;
+            left: 17.05cm;
         }
 
         #code img
