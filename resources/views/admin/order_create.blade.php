@@ -44,29 +44,31 @@
         <div class="box-header with-border">
             <h3 class="box-title">Coordonnée de l'acheteur</h3>
         </div>
-        <div class="box-body" id="buyer">
+        <div class="box-body">
             <form class="form-horizontal" action="" method="post" enctype="application/x-www-form-urlencoded">
                 {{ csrf_field() }}
-                <div class="form-group">
-                    <label for="name" class="col-lg-2 text-right">Nom</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" id="name" name="buyer_name" value="{{ old('buyer_name') }}">
+                <div id="buyer">
+                    <div class="form-group">
+                        <label for="name" class="col-lg-2 text-right">Nom</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" id="name" name="buyer_name" value="{{ old('buyer_name') }}">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="surname" class="col-lg-2 text-right">Prénom</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" id="surname" name="buyer_surname" value="{{ old('surname[]') }}">
+                    <div class="form-group">
+                        <label for="surname" class="col-lg-2 text-right">Prénom</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" id="surname" name="buyer_surname" value="{{ old('surname[]') }}">
+                        </div>
                     </div>
-                </div>
 
 
-                <div class="form-group">
-                    <label for="mail" class="col-lg-2 text-right">Mail</label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input type="email" class="form-control" name="buyer_mail" id="mail" placeholder="Email" value="{{ old('surname[]') }}">
+                    <div class="form-group">
+                        <label for="mail" class="col-lg-2 text-right">Mail</label>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" class="form-control" name="buyer_mail" id="mail" placeholder="Email" value="{{ old('surname[]') }}">
+                            </div>
                         </div>
                     </div>
                 </div>
