@@ -8,6 +8,11 @@ class Liste extends Model
 {
     protected $table = 'lists';
 
+    public static $typesToString = [
+        "MAILIST" => "Liste d'adresse mail",
+        "WILDCARD" => "Liste de domaine mail (ex: utt.fr)"
+    ];
+
     public function prices()
     {
         return $this->belongsToMany(Price::class)
