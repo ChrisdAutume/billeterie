@@ -77,6 +77,7 @@ class PriceController extends Controller
     public function update(Request $request, Price $price)
     {
         $price->fill($request->input());
+        $price->sendBillet = $request->input('sendBillet', false);
         $aggregation_price = null;
         foreach ($request->input('agregat_price', []) as $price_id)
         {

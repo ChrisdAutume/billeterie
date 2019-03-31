@@ -31,17 +31,10 @@
                                             </ul>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tarification <span class="caret"></span></a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestion tarifaire<span class="caret"></span></a>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li><a href="{{ route('admin_prices_index') }}">Tarifs</a></li>
-                                            </ul>
-                                        </li>
-                                    @endif
-                                    @if(Auth::user()->isLevel(2))
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Listes <span class="caret"></span></a>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="{{ route('lists_items_add') }}">Gestion</a></li>
+                                                <li><a href="{{ route('admin_prices_index') }}">Gestion des tarifs</a></li>
+                                                <li><a href="{{ route('lists_items_add') }}">Gestion des listes</a></li>
                                             </ul>
                                         </li>
                                     @endif
@@ -62,7 +55,15 @@
                                     @if(Auth::user()->isAdmin())
                                         <li><a href="{{ route('admin_orders_list') }}">Liste des commandes</a></li>
                                         <li><a href="{{ route('admin_sell') }}">Stats</a></li>
-                                         <li><a href="{{ route('admin_users_index') }}">Utilisateurs</a></li>
+                                        <li><a href="{{ route('admin_users_index') }}">Utilisateurs</a></li>
+                                        <li class="dropdown">
+                                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Application<span class="caret"></span></a>
+                                          <ul class="dropdown-menu" role="menu">
+                                              <li><a href="{{ route('admin_events_list') }}">Evenements</a></li>
+                                              <li><a href="{{ route('admin_partners_list') }}">Partenaires</a></li>
+                                              <li><a href="{{ route('admin_push') }}">Notifications</a></li>
+                                          </ul>
+                                        </li>
                                     @endif
                                 <li class="dropdown user user-menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

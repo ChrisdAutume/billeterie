@@ -90,7 +90,10 @@ L'équipe organisatrice."
         ];
         foreach ($default as $line)
         {
-            DB::table('mail_templates')->insert($line);
+            $i = \App\Models\MailTemplate::firstOrNew(['name'=> $line['name']]);
+            $i->title = $line['title'];
+            $i->content = $line['content'];
+            $i->save();
         }
     }
 }

@@ -31,6 +31,12 @@
                 </div>
             </div>
         </div>
+    @else
+        <div class="callout callout-danger">
+            <h4><i class="fa fa-warning"></i> Création en mode ADMIN</h4>
+            <p>Il est déconseillé de créer des commandes par cette page dans le cas de "ventes". La création de guichet est plus à même de répondre au besoin !</p>
+            <p>A réserver pour la création de billets exceptionnel (partenaires, ventes gratuite ... )</p>
+        </div>
     @endif
 
     <div class="box box-default">
@@ -101,7 +107,7 @@
                     </div>
 
                     @foreach($prices as $price)
-                        @if( ($options = $price->optionsSellable()->where('isMandatory', false)->orderBy('name')->get()) && count($options) > 0)
+                        @if( ($options = $price->optionsSellable()->orderBy('name')->get()) && count($options) > 0)
                     <div class="form-group options_prices price_options_{{ $price->id }}">
                         <div class="col-lg-10">
                             <table class="table table-hover">
@@ -114,9 +120,9 @@
                             @foreach($options as $option)
                                 <tr class="vert-align price price_{{ $price->id }}">
                                     <td>
-                                        <select name="option_1_{{ $price->id }}_{{ $option->id }}" class="options_selector" price="{{ $option->price/100 }}" @if($option->available() == 0) disabled @endif>
+                                        <select name="option_1_{{ $price->id }}_{{ $option->id }}" class="options_selector" price="{{ $option->price/100 }}" @if($option->available() == 0 || $option->isMandatory) disabled @endif>
                                             @for($i=0; $i <= (($option->max_choice>$option->available())?$option->available():$option->max_choice); $i++)
-                                                <option value="{{$i}}">{{$i}}</option>
+                                                <option value="{{$i}}" @if($option->isMandatory && $i == $option->min_choice) selected @endif>{{$i}}</option>
                                             @endfor
                                         </select> {{ $option->name }}
                                         @if($option->description)

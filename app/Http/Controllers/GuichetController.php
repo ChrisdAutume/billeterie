@@ -6,6 +6,7 @@ use App\Mail\GuichetCreated;
 use App\Models\Billet;
 use App\Models\Guichet;
 use Carbon\Carbon;
+use Monolog\Logger;
 use Torann\Hashids\Facade as Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,7 @@ class GuichetController extends Controller
     {
         Auth::user()->requireLevel(10);
 
-        if(empty($request->input('name')) || empty($request->input('mail')) || empty($request->input('start_at')) || empty($request->input('end_at')) || empty($request->input('acl')))
+        if(empty($request->input('name')) || empty($request->input('mail')) || empty($request->input('start_at')) || empty($request->input('end_at')))
         {
             $request->session()->flash('error', "L'ensemble des champs n'est pas remplit.");
             return redirect()->back();
@@ -44,10 +45,11 @@ class GuichetController extends Controller
         $guichet->mail = $request->input('mail');
         $guichet->start_at = Carbon::createFromFormat('d/m/Y H:i', $request->input('start_at'));
         $guichet->end_at = Carbon::createFromFormat('d/m/Y H:i', $request->input('end_at'));
+        $guichet->type = $request->input('type', 'sell');
         $guichet->acl = $request->input('acl');
         $guichet->save();
 
-        if(!is_null($guichet->mail))
+        if(!is_null($guichet->mail) && $guichet->type == 'sell')
         {
             Mail::to($guichet->mail)
                 ->cc(config('billeterie.contact'))
@@ -67,6 +69,33 @@ class GuichetController extends Controller
         return view('guichet.home');
     }
 
+    /**
+     * API bulk validation
+     */
+    public function apiPostValidation(Request $request)
+    {
+        if(Auth::user()->type != 'validation')
+        {
+            return response()->json(['error' => 'This api can\'t be used.'], 401);
+        }
+        $datas = $request->input();
+
+        foreach($datas as $data)
+        {
+            $billet = Billet::find($data['id']);
+            if($billet)
+            {
+                if($billet->validated_at)
+                {
+                    Log::info("Billet ".$billet->id." déja validé !");
+                } else {
+                    $billet->validated_at = (new \DateTime())->setTimestamp($data['validated_at']);
+                    $billet->save();
+                }
+            }
+        }
+        return response()->json([]);
+    }
     /**
      * Js bulk validation for gichet
      * expect a json object with `id => datetime` inside
@@ -148,17 +177,19 @@ class GuichetController extends Controller
         ]);
     }
 
-    public function ApiGetExport(Request $request, $uuid)
+    public function apiGetExport(Request $request)
     {
-        $guichet = Guichet::where('uuid', $uuid)
-            ->where('start_at','<=',Carbon::now('Europe/Paris'))
-            ->where('end_at','>=',Carbon::now('Europe/Paris'))->first();
+        $guichet = Auth::user();
 
         if(!$guichet || $guichet->type != 'validation')
         {
             return response()->json(['Token not authorized.'], 403);
         }
-        $billets = Billet::with(['options','price'])->get();
+        if($request->has('updated_at'))
+            $billets = Billet::with(['options','price'])->where('updated_at', '>=', $request->get('updated_at'))->get();
+        else
+            $billets = Billet::with(['options','price'])->get();
+
         $return = $billets->map(function(Billet $billet){
             $b = $billet->toArray();
             $b['qrcode'] = $billet->getQrCodeSecurity();

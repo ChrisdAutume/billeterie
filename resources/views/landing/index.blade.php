@@ -80,7 +80,7 @@
                     <div class="bottom-text">
                         <h1>Soirée de Remise de Diplome</h1>
                         <p>
-                            Samedi 18 novembre 2017
+                            Samedi 17 novembre 2018
                         </p>
                     </div>
 

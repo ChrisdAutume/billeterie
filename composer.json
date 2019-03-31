@@ -21,7 +21,8 @@
         "barryvdh/laravel-cors": "^0.10.0",
         "doctrine/dbal": "^2.6",
         "maatwebsite/excel": "^2.1",
-        "spatie/laravel-image-optimizer": "^1.1"
+        "spatie/laravel-image-optimizer": "^1.1",
+        "ext-json": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -47,9 +48,6 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "php artisan key:generate",
-            "php artisan migrate --force",
-            "php artisan db:seed",
             "php artisan optimize"
         ],
         "post-update-cmd": [
