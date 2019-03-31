@@ -31,6 +31,12 @@
                 </div>
             </div>
         </div>
+    @else
+        <div class="callout callout-danger">
+            <h4><i class="fa fa-warning"></i> Création en mode ADMIN</h4>
+            <p>Il est déconseillé de créer des commandes par cette page dans le cas de "ventes". La création de guichet est plus à même de répondre au besoin !</p>
+            <p>A réserver pour la création de billets exceptionnel (partenaires, ventes gratuite ... )</p>
+        </div>
     @endif
 
     <div class="box box-default">
