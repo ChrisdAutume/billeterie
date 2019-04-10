@@ -30,7 +30,7 @@ class Billet extends Model
         'name',
         'surname',
         'mail',
-        'price_id',
+        'price_id'
     ];
 
     public function __construct(array $attributes = [])
