@@ -37,7 +37,7 @@
                         <td>@if($user->level<100)
                                 <a href="{{ route('admin_users_level', ['level'=> 100, 'admin' => $user]) }}" class="btn btn-xs btn-flat btn-danger">Convertir en admin</a>
                             @else
-                                <a href="{{ route('admin_users_level', ['level'=> 0, 'admin' => $user]) }}" class="btn btn-xs btn-flat btn-danger">Convertir en utilisateur</a>
+                                <a href="{{ route('admin_users_level', ['level'=> 0, 'admin' => $user]) }}" class="btn btn-xs btn-flat btn-warning">Convertir en utilisateur standard</a>
                             @endif</td>
                     </tr>
                 @endforeach
