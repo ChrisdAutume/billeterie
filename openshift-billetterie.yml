@@ -1,0 +1,422 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: billetterie-mysql-persistent
+message: |-
+  The following service(s) have been created in your project: ${NAME}, ${DATABASE_SERVICE_NAME}.
+
+metadata:
+  annotations:
+    description: Billetterie application
+    iconClass: icon-laravel
+    openshift.io/display-name: Billetterie + MySQL (Persistent)
+    tags: quickstart,php,laravel,billetterie
+  name: billetterie-mysql-persistent
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: ${NAME}
+  stringData:
+    databasePassword: ${DATABASE_PASSWORD}
+    databaseUser: ${DATABASE_USER}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes and load balances the application pods
+      service.alpha.openshift.io/dependencies: '[{"name": "${DATABASE_SERVICE_NAME}",
+        "kind": "Service"}]'
+    name: ${NAME}
+  spec:
+    ports:
+    - name: web
+      port: 8080
+      targetPort: 8080
+    selector:
+      name: ${NAME}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${NAME}
+  spec:
+    host: ${BILLETTERIE_URL}
+    to:
+      kind: Service
+      name: ${NAME}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      description: Keeps track of changes in the application image
+    name: ${NAME}
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      description: Defines how to build the application
+    name: ${NAME}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${NAME}:latest
+    source:
+      contextDir: ${CONTEXT_DIR}
+      git:
+        ref: ${SOURCE_REPOSITORY_REF}
+        uri: ${SOURCE_REPOSITORY_URL}
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: COMPOSER_MIRROR
+          value: ${COMPOSER_MIRROR}
+        from:
+          kind: ImageStreamTag
+          name: php:7.1
+          namespace: ${NAMESPACE}
+      type: Source
+    triggers:
+    - type: ImageChange
+    - type: ConfigChange
+    - github:
+        secret: ${GITHUB_WEBHOOK_SECRET}
+      type: GitHub
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ${DATABASE_SERVICE_NAME}
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: ${VOLUME_CAPACITY}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy the application server
+    name: ${NAME}
+  spec:
+    replicas: 1
+    selector:
+      name: ${NAME}
+    strategy:
+      recreateParams:
+        pre:
+          execNewPod:
+            command:
+            - php artisan migrate --force
+            containerName: billetterie-mysql-persistent
+          failurePolicy: Retry
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: ${NAME}
+        name: ${NAME}
+      spec:
+        containers:
+        - env:
+          - name: CLUSTER_NAME
+            value: ${CLUSTER_NAME}
+          - name: ROUTER_SHARD
+            value: ${ROUTER_SHARD}
+          - name: DB_SERVICE_NAME
+            value: ${DATABASE_SERVICE_NAME}
+          - name: DB_CONNECTION
+            value: ${DATABASE_ENGINE}
+          - name: DB_DATABASE
+            value: ${DATABASE_NAME}
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: databaseUser
+                name: ${NAME}
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: databasePassword
+                name: ${NAME}
+          - name: APP_KEY
+            value: ${LARAVEL_APP_KEY}
+          - name: APP_ENV
+            value: ${LARAVEL_APP_ENV}
+          - name: APP_DEBUG
+            value: ${LARAVEL_APP_DEBUG}
+          - name: OPCACHE_REVALIDATE_FREQ
+            value: ${OPCACHE_REVALIDATE_FREQ}
+          - name: LANDING_DATE
+            value: ${LANDING_DATE}
+          - name: APP_NAME
+            value: ${APP_NAME}
+          - name: APP_SUBNAME
+            value: ${APP_SUBNAME}
+          - name: APP_CONTACT
+            value: ${APP_CONTACT}
+          - name: ETUPAY_APIKEY
+            value: ${ETUPAY_APIKEY}
+          - name: ETUPAY_SERVICEID
+            value: ${ETUPAY_SERVICEID}
+          - name: ETUPAY_ENDPOINT
+            value: ${ETUPAY_ENDPOINT}
+          - name: ETUUTT_CLIENT_ID
+            value: ${ETUUTT_CLIENT_ID}
+          - name: ETUUTT_CLIENT_SECRET
+            value: ${ETUUTT_CLIENT_SECRET}
+          - name: PIWIK_SITE_ID
+            value: ${PIWIK_SITE_ID}
+          - name: GOOGLE_ANALYTICS_ID
+            value: ${GOOGLE_ANALYTICS_ID}
+          image: ${NAME}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+          name: billetterie-mysql-persistent
+          ports:
+          - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health.php
+              port: 8080
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: ${MEMORY_LIMIT}
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - billetterie-mysql-persistent
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}:latest
+      type: ImageChange
+    - type: ConfigChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes the database server
+    name: ${DATABASE_SERVICE_NAME}
+  spec:
+    ports:
+    - name: mysql
+      port: 3306
+      targetPort: 3306
+    selector:
+      name: ${DATABASE_SERVICE_NAME}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy the database
+    name: ${DATABASE_SERVICE_NAME}
+  spec:
+    replicas: 1
+    selector:
+      name: ${DATABASE_SERVICE_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: ${DATABASE_SERVICE_NAME}
+        name: ${DATABASE_SERVICE_NAME}
+      spec:
+        containers:
+        - env:
+          - name: MYSQL_USER
+            value: ${DATABASE_USER}
+          - name: MYSQL_PASSWORD
+            value: ${DATABASE_PASSWORD}
+          - name: MYSQL_DATABASE
+            value: ${DATABASE_NAME}
+          image: mysql
+          livenessProbe:
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 3306
+            timeoutSeconds: 1
+          name: mysql
+          ports:
+          - containerPort: 3306
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - MYSQL_PWD='${DATABASE_PASSWORD}' mysql -h 127.0.0.1 -u ${DATABASE_USER}
+                -D ${DATABASE_NAME} -e 'SELECT 1'
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: ${MEMORY_MYSQL_LIMIT}
+          volumeMounts:
+          - mountPath: /var/lib/mysql/data
+            name: ${DATABASE_SERVICE_NAME}-data
+        volumes:
+        - name: ${DATABASE_SERVICE_NAME}-data
+          persistentVolumeClaim:
+            claimName: ${DATABASE_SERVICE_NAME}
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - mysql
+        from:
+          kind: ImageStreamTag
+          name: mysql:5.7
+          namespace: ${NAMESPACE}
+      type: ImageChange
+    - type: ConfigChange
+parameters:
+- description: The name assigned to all of the frontend objects defined in this template.
+  displayName: Name
+  name: NAME
+  required: true
+  value: billetterie-mysql-persistent
+- description: The billetterie URL
+  displayName: BILLETTERIE_URL
+  name: BILLETTERIE_URL
+  required: true
+  value: 'billetterie.bde.utt.fr'
+- description: The OpenShift Namespace where the ImageStream resides.
+  displayName: Namespace
+  name: NAMESPACE
+  required: true
+  value: openshift
+- description: The URL of the repository with your application source code.
+  displayName: Git Repository URL
+  name: SOURCE_REPOSITORY_URL
+  required: true
+  value: https://gitlab.uttnetgroup.fr/bde/billetterie.git
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: SOURCE_REPOSITORY_REF
+- description: Determines the 'environment' your application is currently.
+  displayName: Laravel Application Environment
+  name: LARAVEL_APP_ENV
+  required: true
+  value: production
+- description: Enable or disable detailed error messages.
+  displayName: Laravel Application Debug Mode
+  name: LARAVEL_APP_DEBUG
+  required: true
+  value: "false"
+- description: How often to check script timestamps for updates, in seconds. 0 will
+    result in OPcache checking for updates on every request.
+  displayName: OPcache Revalidation Frequency
+  name: OPCACHE_REVALIDATE_FREQ
+  value: "0"
+- description: The custom Composer mirror URL
+  displayName: Custom Composer Mirror URL
+  name: COMPOSER_MIRROR
+- description: Maximum amount of memory the Laravel container can use.
+  displayName: Memory Limit
+  name: MEMORY_LIMIT
+  required: true
+  value: 512Mi
+- description: Maximum amount of memory the MySQL container can use.
+  displayName: Memory Limit (MySQL)
+  name: MEMORY_MYSQL_LIMIT
+  required: true
+  value: 512Mi
+- description: Volume space available for data, e.g. 512Mi, 2Gi
+  displayName: Volume Capacity
+  name: VOLUME_CAPACITY
+  required: true
+  value: 5Gi
+- description: Set this to the relative path to your project if it is not in the root
+    of your repository.
+  displayName: Context Directory
+  name: CONTEXT_DIR
+- description: The exposed hostname that will route to the Laravel service, if left
+    blank a value will be defaulted.
+  displayName: Application Hostname
+  name: APPLICATION_DOMAIN
+- description: A secret string used to configure the GitHub webhook.
+  displayName: GitHub Webhook Secret
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  name: GITHUB_WEBHOOK_SECRET
+- displayName: Database Service Name
+  name: DATABASE_SERVICE_NAME
+  required: true
+  value: mysql
+- description: 'Database engine: mysql (default), pgsql, or sqlite.'
+  displayName: Database Engine
+  name: DATABASE_ENGINE
+  required: true
+  value: mysql
+- displayName: Database Name
+  name: DATABASE_NAME
+  required: true
+  value: default
+- displayName: Database User
+  name: DATABASE_USER
+  required: true
+  value: laravel
+- displayName: Database Password
+  from: '[a-zA-Z0-9]{16}'
+  generate: expression
+  name: DATABASE_PASSWORD
+- description: Set this to a 32 character random string.
+  displayName: Laravel Encryption Key
+  from: '[\w]{32}'
+  generate: expression
+  name: LARAVEL_APP_KEY
+- displayName: BILLETTERIE NAME
+  name: APP_NAME
+  required: true
+  value: 'BDE UTT'
+- displayName: BILLETTERIE SUBNAME
+  name: APP_SUBNAME
+  required: true
+  value: 'Billetterie'
+- displayName: BILLETTERIE MAIL
+  name: APP_CONTACT
+  required: true
+  value: 'bde@utt.fr'
+- displayName: ETUPAY KEY
+  name: ETUPAY_APIKEY
+  required: true
+  value: ''
+- displayName: ETUPAY SERVICE ID
+  name: ETUPAY_SERVICEID
+  required: true
+  value: 0
+- displayName: ETUPAY ENDPOINT
+  name: ETUPAY_ENDPOINT
+  required: true
+  value: 'https://etupay.utt.fr/initiate'
+- displayName: ETUUTT OAUTH ID
+  name: ETUUTT_CLIENT_ID
+  required: true
+  value: ''
+- displayName: ETUUTT OAUTH SECRET
+  name: ETUUTT_CLIENT_SECRET
+  required: true
+  value: ''
+- displayName: LANDING PAGE UNTIL DATE
+  name: LANDING_DATE
+  required: false
+  value:
+- displayName: PIWIK ID
+  name: PIWIK_SITE_ID
+  required: false
+  value:
+- displayName: GOOGLE ANALYTICS ID
+  name: GOOGLE_ANALYTICS_ID
+  required: false
+  value:
+
