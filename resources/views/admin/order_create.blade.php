@@ -31,6 +31,12 @@
                 </div>
             </div>
         </div>
+    @else
+        <div class="callout callout-danger">
+            <h4><i class="fa fa-warning"></i> Création en mode ADMIN</h4>
+            <p>Il est déconseillé de créer des commandes par cette page dans le cas de "ventes". La création de guichet est plus à même de répondre au besoin !</p>
+            <p>A réserver pour la création de billets exceptionnel (partenaires, ventes gratuite ... )</p>
+        </div>
     @endif
 
     <div class="box box-default">
@@ -38,29 +44,31 @@
         <div class="box-header with-border">
             <h3 class="box-title">Coordonnée de l'acheteur</h3>
         </div>
-        <div class="box-body" id="buyer">
+        <div class="box-body">
             <form class="form-horizontal" action="" method="post" enctype="application/x-www-form-urlencoded">
                 {{ csrf_field() }}
-                <div class="form-group">
-                    <label for="name" class="col-lg-2 text-right">Nom</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" id="name" name="buyer_name" value="{{ old('buyer_name') }}">
+                <div id="buyer">
+                    <div class="form-group">
+                        <label for="name" class="col-lg-2 text-right">Nom</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" id="name" name="buyer_name" value="{{ old('buyer_name') }}">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="surname" class="col-lg-2 text-right">Prénom</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" id="surname" name="buyer_surname" value="{{ old('surname[]') }}">
+                    <div class="form-group">
+                        <label for="surname" class="col-lg-2 text-right">Prénom</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" id="surname" name="buyer_surname" value="{{ old('surname[]') }}">
+                        </div>
                     </div>
-                </div>
 
 
-                <div class="form-group">
-                    <label for="mail" class="col-lg-2 text-right">Mail</label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input type="email" class="form-control" name="buyer_mail" id="mail" placeholder="Email" value="{{ old('surname[]') }}">
+                    <div class="form-group">
+                        <label for="mail" class="col-lg-2 text-right">Mail</label>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" class="form-control" name="buyer_mail" id="mail" placeholder="Email" value="{{ old('surname[]') }}">
+                            </div>
                         </div>
                     </div>
                 </div>

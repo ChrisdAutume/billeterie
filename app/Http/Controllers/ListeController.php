@@ -36,6 +36,14 @@ class ListeController extends Controller
                 }
                 $request->session()->flash('success', $added." ajouté à la liste ".$liste->name);
             }
+            if($request->has(['list_name', 'list_type_id']) && in_array($request->get('list_type_id'), array_keys(Liste::$typesToString))) {
+                $liste = new Liste();
+                $liste->name = $request->get('list_name');
+                $liste->type = $request->get('list_type_id');
+                $liste->saveOrFail();
+
+                $request->session()->flash('success', "Liste ".$liste->name." crée !");
+            }
         }
 
         return view('admin.liste.add_item', ['lists'=>Liste::all()]);

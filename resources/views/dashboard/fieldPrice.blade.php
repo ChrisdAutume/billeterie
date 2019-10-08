@@ -26,6 +26,14 @@
                             <input class="form-control" type="text" id="field_{{ $field->id }}" name="field_{{ $field->id }}" value="{{ old('field_'.$field->id) }}" placeholder="{{ $field->default }}">
                         @elseif($field->type == 'text')
                             <textarea class="form-control" name="field_{{ $field->id }}" rows="10" id="field_{{ $field->id }}" placeholder="{{ $field->default }}">{{ old('field_'.$field->id) }}</textarea>
+                        @elseif($field->type == 'select')
+                            <select class="form-control" name="field_{{ $field->id }}" id="field_{{ $field->id }}">
+                                @foreach(json_decode($field->values) as $value)
+                                    <option value="{{ $value }}" @if(old('field_'.$field->id) == $value)selected @endif> {{ $value }}</option>
+                                @endforeach
+                            </select>
+                        @else
+                            <textarea class="form-control" name="field_{{ $field->id }}" rows="10" id="field_{{ $field->id }}" placeholder="{{ $field->default }}">{{ old('field_'.$field->id) }}</textarea>
                         @endif
                     </div>
                 </div>

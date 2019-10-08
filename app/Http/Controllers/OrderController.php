@@ -331,8 +331,18 @@ class OrderController extends Controller
                 $error = false;
                 foreach($price->fields as $field)
                 {
-                    if($request->has('field_'.$field->id))
-                        $price_data[$field->id] = $request->input('field_'.$field->id);
+                    if($request->has('field_'.$field->id)) {
+                        if($field->type == 'select')
+                        {
+                            if(!in_array($request->input('field_' . $field->id), json_decode($field->values)))
+                            {
+                                $request->session()->flash('error', "Valeur du champ $field->name incorrect !");
+                                $error=true;
+                                continue;
+                            }
+                        }
+                        $price_data[$field->id] = $request->input('field_' . $field->id);
+                    }
                     else if($field->mandatory)
                     {
                         $request->session()->flash('error', "L'ensemble des champs n'ont pas été remplit.");
@@ -340,11 +350,15 @@ class OrderController extends Controller
                         continue;
                     }
                 }
-                if($error)
+                if($error) {
                     return view('dashboard.fieldPrice', [
                         'fields' => $price->fields
                     ]);
-                else $billet->fields = json_encode($price_data);
+                }
+                else {
+                    //json_encode($price_data)
+                    $billet->fields_data = json_encode($price_data);
+                }
             } else
                 return view('dashboard.fieldPrice', [
                     'fields' => $price->fields

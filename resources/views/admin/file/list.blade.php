@@ -9,6 +9,11 @@
 @endsection
 
 @section('content')
+    <div class="callout callout-warning">
+        <h4><i class="fa fa-warning"></i> En cas de mise à jour d'un fond de billet</h4>
+        <p>Il faut absolument mettre à jour chaque billet, même si le nouveau fichier posséde le même "nom".</p>
+    </div>
+
     <div class="box box-default">
 
         <div class="box-header with-border">
