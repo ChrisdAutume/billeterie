@@ -155,4 +155,9 @@ class Order extends Model
         return Config::get('services.etupay.endpoint').'&payload='.$payload;
 
     }
+
+    public function guichet()
+    {
+        return $this->belongsTo(Guichet::class);
+    }
 }

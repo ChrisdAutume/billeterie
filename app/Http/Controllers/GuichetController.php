@@ -205,9 +205,25 @@ class GuichetController extends Controller
     public function getExport(Request $request)
     {
         Auth::user()->requireLevel(2);
-
+        $orders = Order::orderBy('name', 'asc')->get();
         $billets = Billet::with('options')->with('price')->orderBy('name', 'asc')->get();
+
+        $rorders = []
+        foreach($orders as $order)
+        {
+            $rorders[] = [
+                'Numero de commande' => $order->id,
+                'Prénom' => $order->surname,
+                'Nom' => $order->name,
+                'Email' => $order->mail,
+                'Moyen de paiement' => $order->mean_of_paiment,
+                'Montant' => round($order->amount/2, 2),
+                'Guichet'=> ($order->guichet?$order->guichet->name:''),
+                'Etat' =>   $order->state
+            ];
+        }
         $result = [];
+        $roptions = [];
         foreach($billets as $billet) {
 
             $options = '';
@@ -217,10 +233,22 @@ class GuichetController extends Controller
                     $options .= ', ';
 
                 $options .= $option->pivot->qty .' '.$option->name;
+                $roptions[] = [
+                    'Numero du billet' => $billet->id,
+                    'Numero de commande' => $billet->order_id,
+                    'Type' => $billet->price->name,
+                    'Prénom' => $billet->surname,
+                    'Nom' => $billet->name,
+                    'Email' => $billet->mail,
+                    'Option' => $option->name,
+                    'Quantité' => $option->pivot->qty
+                ];
             }
 
             $result[] = [
-                'id' => $billet->id,
+                'Numero du billet' => $billet->id,
+                'Numero de commande' => $billet->order_id,
+                'Type' => $billet->price->name,
                 'Prénom' => $billet->surname,
                 'Nom' => $billet->name,
                 'Email' => $billet->mail,
@@ -229,11 +257,17 @@ class GuichetController extends Controller
             ];
         }
 
-        return Excel::create('Billets', function ($file) use ($result) {
-            $file->sheet('', function ($sheet) use ($result) {
+        return Excel::create('bilan', function ($file) use ($result) {
+            $file->sheet('Commande', function ($sheet) use ($result) {
+                $sheet->fromArray($rorders);
+            });
+            $file->sheet('Détail billet', function ($sheet) use ($result) {
                 $sheet->fromArray($result);
             });
-        })->export('csv');
+            $file->sheet('Détail billet et options', function ($sheet) use ($result) {
+                $sheet->fromArray($roptions);
+            });
+        })->export('xls');
     }
 
     public function validateTicket(Request $request)
