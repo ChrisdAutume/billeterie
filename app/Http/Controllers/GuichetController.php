@@ -208,7 +208,7 @@ class GuichetController extends Controller
         $orders = Order::orderBy('name', 'asc')->get();
         $billets = Billet::with('options')->with('price')->orderBy('name', 'asc')->get();
 
-        $rorders = []
+        $rorders = [];
         foreach($orders as $order)
         {
             $rorders[] = [
