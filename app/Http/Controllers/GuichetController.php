@@ -217,7 +217,7 @@ class GuichetController extends Controller
                 'Nom' => $order->name,
                 'Email' => $order->mail,
                 'Moyen de paiement' => $order->mean_of_paiment,
-                'Montant' => round($order->amount/2, 2),
+                'Montant' => round($order->price/100, 2),
                 'Guichet'=> ($order->guichet?$order->guichet->name:''),
                 'Etat' =>   $order->state
             ];
