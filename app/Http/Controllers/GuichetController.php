@@ -257,14 +257,14 @@ class GuichetController extends Controller
             ];
         }
 
-        return Excel::create('bilan', function ($file) use ($result) {
-            $file->sheet('Commande', function ($sheet) use ($result) {
+        return Excel::create('bilan', function ($file) use ($result, $rorders, $roptions) {
+            $file->sheet('Commande', function ($sheet) use ($rorders) {
                 $sheet->fromArray($rorders);
             });
             $file->sheet('Détail billet', function ($sheet) use ($result) {
                 $sheet->fromArray($result);
             });
-            $file->sheet('Détail billet et options', function ($sheet) use ($result) {
+            $file->sheet('Détail billet et options', function ($sheet) use ($roptions) {
                 $sheet->fromArray($roptions);
             });
         })->export('xls');
