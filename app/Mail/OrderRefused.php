@@ -33,10 +33,6 @@ class OrderRefused extends Mailable implements ShouldQueue
     {
         $this->order = $order;
         $this->template = MailTemplate::where('name',$this->template_name)->first();
-        if(!$this->template || !$this->template->isActive)
-        {
-            $this->delete();
-        }
     }
 
     /**
@@ -46,6 +42,12 @@ class OrderRefused extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        if(!$this->template || !$this->template->isActive)
+        {
+            $this->delete();
+            return true;
+        }
+
         $mail_data = [
             'order-surname' => $this->order->surname,
             'order-name' => $this->order->name,

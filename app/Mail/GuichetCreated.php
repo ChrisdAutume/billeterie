@@ -33,10 +33,6 @@ class GuichetCreated extends Mailable implements ShouldQueue
     {
         $this->guichet = $guichet;
         $this->template = MailTemplate::where('name',$this->template_name)->first();
-        if(!$this->template || !$this->template->isActive)
-        {
-            $this->delete();
-        }
     }
 
     /**
@@ -46,6 +42,12 @@ class GuichetCreated extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        if(!$this->template || !$this->template->isActive)
+        {
+            $this->delete();
+            return true;
+        }
+
         $mail_data = [
             'guichet-name'=> $this->guichet->name,
             'guichet-start-at'=> $this->guichet->start_at,
