@@ -34,10 +34,6 @@ class BilletEmited extends Mailable implements ShouldQueue
     {
         $this->billet = $billet;
         $this->template = MailTemplate::where('name',$this->template_name)->first();
-        if(!$this->template || !$this->template->isActive)
-        {
-            $this->delete();
-        }
     }
 
     /**
@@ -47,6 +43,12 @@ class BilletEmited extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        if(!$this->template || !$this->template->isActive)
+        {
+            $this->delete();
+            return true;
+        }
+
         $billet_url = url()->route('download_billet', ['billet'=>$this->billet, 'securite'=>$this->billet->getDownloadSecurity()]);
         $mail_data = [
             'name' => $this->billet->name,

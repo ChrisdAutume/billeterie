@@ -33,11 +33,6 @@ class OrderValidated extends Mailable implements ShouldQueue
     {
         $this->order = $order;
         $this->template = MailTemplate::where('name',$this->template_name)->first();
-
-        if(!$this->template || !$this->template->isActive)
-        {
-            $this->delete();
-        }
     }
 
     /**
@@ -47,6 +42,12 @@ class OrderValidated extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        if(!$this->template || !$this->template->isActive)
+        {
+            $this->delete();
+            return true;
+        }
+
         $summary = '<ul>';
         foreach ($this->order->billets()->get() as $billet)
         {
