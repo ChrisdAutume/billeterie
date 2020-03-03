@@ -141,6 +141,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['right:seller']], function (
 
     Route::get('notifications', ['uses' => 'PushController@index'])->name('admin_push');
     Route::post('notifications', ['uses' => 'PushController@store']);
+
+    Route::get('reset/all', ['uses' => 'AdminController@resetBilletterie'])->name('admin_reset_all');
 });
 
 Route::group(['prefix' => 'etupay'], function () {
